@@ -20,6 +20,8 @@ webAppBuilder
 services
     .AddTransient<IClaimsTransformation, VetAwesomeClaimsTransformation>()
     .AddHttpContextAccessor()
+    .AddDistributedMemoryCache()
+    .AddSession()
     .AddVetAwesomeCors()
     .AddVetAwesomeSwagger(webAppBuilder)
     .AddControllers();
@@ -32,7 +34,8 @@ webAppBuilder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 var app = webAppBuilder.Build();
 app.UseSwagger()
    .UseSwaggerUI()
-   .UseAuthorization();
+   .UseAuthorization()
+   .UseSession();
 
 app.MapControllers();
 app.UseCors("CorsOrigins");
