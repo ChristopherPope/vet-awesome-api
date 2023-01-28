@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{6A2B62B1-FB6A-4FF6-ADB2-1FCEBBE3EDFF}"
 	ProjectSection(SolutionItems) = preProject
-		..\SQL\Schema.sql = ..\SQL\Schema.sql
+		SQL\Schema.sql = SQL\Schema.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{672840B3-A03E-4FBF-BA09-52DDEDACBFA9}"
