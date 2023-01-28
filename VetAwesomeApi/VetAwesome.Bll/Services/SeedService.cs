@@ -756,7 +756,7 @@ namespace VetAwesome.Bll.Services
             uow.Commit();
         }
 
-        public PetEntity CreatePet()
+        public PetEntity MakePet()
         {
             var breeds = dogBreeds;
             var names = dogNames;
@@ -792,7 +792,7 @@ namespace VetAwesome.Bll.Services
             uow.Commit();
         }
 
-        private CustomerEntity CreateCustomer(bool isMale, string? lastName = null)
+        private CustomerEntity MakeCustomer(bool isMale, string? lastName = null)
         {
             var firstName = isMale ? RandomMaleName : RandomFemaleName;
             lastName ??= RandomLastName;
@@ -820,7 +820,7 @@ namespace VetAwesome.Bll.Services
             var households = new List<HouseholdEntity>();
             for (var i = 0; i < numHouseholds; i++)
             {
-                households.Add(CreateHousehold());
+                households.Add(MakeHousehold());
             }
 
             uow.Households.CreateRange(households);
@@ -829,19 +829,19 @@ namespace VetAwesome.Bll.Services
 
         public void InsertUsers()
         {
-            uow.Users.Create(CreateUser(RoleType.Secretary));
-            uow.Users.Create(CreateUser(RoleType.Owner));
+            uow.Users.Create(MakeUser(RoleType.Secretary));
+            uow.Users.Create(MakeUser(RoleType.Owner));
 
             var numVets = rand.Next(3, 7);
             for (var i = 0; i < numVets; i++)
             {
-                uow.Users.Create(CreateUser(RoleType.Veterinarian));
+                uow.Users.Create(MakeUser(RoleType.Veterinarian));
             }
 
             uow.Commit();
         }
 
-        private UserEntity CreateUser(RoleType role)
+        private UserEntity MakeUser(RoleType role)
         {
             var firstName = RandomBool ? RandomMaleName : RandomFemaleName;
             return new UserEntity()
@@ -851,7 +851,7 @@ namespace VetAwesome.Bll.Services
             };
         }
 
-        private HouseholdEntity CreateHousehold()
+        private HouseholdEntity MakeHousehold()
         {
             var household = new HouseholdEntity
             {
@@ -865,14 +865,14 @@ namespace VetAwesome.Bll.Services
             var lastName = RandomLastName;
             if (RandomBool)
             {
-                household.Customers.Add(CreateCustomer(true, lastName));
+                household.Customers.Add(MakeCustomer(true, lastName));
             }
-            household.Customers.Add(CreateCustomer(false, lastName));
+            household.Customers.Add(MakeCustomer(false, lastName));
 
             var petCount = rand.Next(1, 5);
             for (var i = 0; i < petCount; i++)
             {
-                household.Pets.Add(CreatePet());
+                household.Pets.Add(MakePet());
             }
 
             return household;
