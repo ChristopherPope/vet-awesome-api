@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using VetAwesome.Bll.Dtos;
 using VetAwesome.Bll.Enums;
+using VetAwesome.Bll.Interfaces.RandomDataMakers;
 using VetAwesome.Bll.Interfaces.Services;
 using VetAwesome.Dal.Entities;
 using VetAwesome.Dal.Interfaces;
@@ -9,8 +9,8 @@ namespace VetAwesome.Bll.Services
 {
     public class SeedService : BaseService, ISeedService
     {
-        #region PetBreeds
-        private List<PetBreedEntity> dogBreeds = new()
+        #region PetBreed Entities
+        private List<PetBreedEntity> dogBreedEntities = new()
         {
             new PetBreedEntity { Name = "Affenpinscher" },
             new PetBreedEntity { Name = "Afghan Hound" },
@@ -208,7 +208,7 @@ namespace VetAwesome.Bll.Services
             new PetBreedEntity { Name = "Xoloitzcuintli" },
             new PetBreedEntity { Name = "Yorkshire Terrier" }
         };
-        private List<PetBreedEntity> catBreeds = new()
+        private List<PetBreedEntity> catBreedEntities = new()
         {
             new PetBreedEntity { Name = "Abyssinian" },
             new PetBreedEntity { Name = "American Bobtail" },
@@ -285,444 +285,76 @@ namespace VetAwesome.Bll.Services
             new PetBreedEntity { Name = "Turkish Van" }
         };
         #endregion
-        #region States
-        private List<StateEntity> states = new()
+        #region State Entities
+        private List<StateEntity> stateEntities = new()
         {
-            new StateEntity { Name = "Alabama", Abbreviation = "NA" },
-            new StateEntity { Name = "Alaska", Abbreviation = "NA" },
-            new StateEntity { Name = "Arizona", Abbreviation = "NA" },
-            new StateEntity { Name = "Arkansas", Abbreviation = "NA" },
-            new StateEntity { Name = "California", Abbreviation = "NA" },
-            new StateEntity { Name = "Colorado", Abbreviation = "NA" },
-            new StateEntity { Name = "Connecticut", Abbreviation = "NA" },
-            new StateEntity { Name = "Delaware", Abbreviation = "NA" },
-            new StateEntity { Name = "Florida", Abbreviation = "NA" },
-            new StateEntity { Name = "Georgia", Abbreviation = "NA" },
-            new StateEntity { Name = "Hawaii", Abbreviation = "NA" },
-            new StateEntity { Name = "Idaho", Abbreviation = "NA" },
-            new StateEntity { Name = "Illinois", Abbreviation = "NA" },
-            new StateEntity { Name = "Indiana", Abbreviation = "NA" },
-            new StateEntity { Name = "Iowa", Abbreviation = "NA" },
-            new StateEntity { Name = "Kansas", Abbreviation = "NA" },
-            new StateEntity { Name = "Kentucky", Abbreviation = "NA" },
-            new StateEntity { Name = "Louisiana", Abbreviation = "NA" },
-            new StateEntity { Name = "Maine", Abbreviation = "NA" },
-            new StateEntity { Name = "Maryland", Abbreviation = "NA" },
-            new StateEntity { Name = "Massachusetts", Abbreviation = "NA" },
-            new StateEntity { Name = "Michigan", Abbreviation = "NA" },
-            new StateEntity { Name = "Minnesota", Abbreviation = "NA" },
-            new StateEntity { Name = "Mississippi", Abbreviation = "NA" },
-            new StateEntity { Name = "Missouri", Abbreviation = "NA" },
-            new StateEntity { Name = "Montana", Abbreviation = "NA" },
-            new StateEntity { Name = "Nebraska", Abbreviation = "NA" },
-            new StateEntity { Name = "Nevada", Abbreviation = "NA" },
-            new StateEntity { Name = "New Hampshire", Abbreviation = "NA" },
-            new StateEntity { Name = "New Jersey", Abbreviation = "NA" },
-            new StateEntity { Name = "New Mexico", Abbreviation = "NA" },
-            new StateEntity { Name = "New York", Abbreviation = "NA" },
-            new StateEntity { Name = "North Carolina", Abbreviation = "NA" },
-            new StateEntity { Name = "North Dakota", Abbreviation = "NA" },
-            new StateEntity { Name = "Ohio", Abbreviation = "NA" },
-            new StateEntity { Name = "Oklahoma", Abbreviation = "NA" },
-            new StateEntity { Name = "Oregon", Abbreviation = "NA" },
-            new StateEntity { Name = "Pennsylvania", Abbreviation = "NA" },
-            new StateEntity { Name = "Rhode Island", Abbreviation = "NA" },
-            new StateEntity { Name = "South Carolina", Abbreviation = "NA" },
-            new StateEntity { Name = "South Dakota", Abbreviation = "NA" },
-            new StateEntity { Name = "Tennessee", Abbreviation = "NA" },
-            new StateEntity { Name = "Texas", Abbreviation = "NA" },
-            new StateEntity { Name = "Utah", Abbreviation = "NA" },
-            new StateEntity { Name = "Vermont", Abbreviation = "NA" },
-            new StateEntity { Name = "Virginia", Abbreviation = "NA" },
-            new StateEntity { Name = "Washington", Abbreviation = "NA" },
-            new StateEntity { Name = "West Virginia", Abbreviation = "NA" },
-            new StateEntity { Name = "Wisconsin", Abbreviation = "NA" },
-            new StateEntity { Name = "Wyoming", Abbreviation = "NA" }
+            new StateEntity { Name = "Alabama", Abbreviation = "AL" },
+            new StateEntity { Name = "Alaska", Abbreviation = "AK" },
+            new StateEntity { Name = "Arizona", Abbreviation = "AR" },
+            new StateEntity { Name = "Arkansas", Abbreviation = "AR" },
+            new StateEntity { Name = "California", Abbreviation = "CA" },
+            new StateEntity { Name = "Colorado", Abbreviation = "CO" },
+            new StateEntity { Name = "Connecticut", Abbreviation = "CT" },
+            new StateEntity { Name = "Delaware", Abbreviation = "DE" },
+            new StateEntity { Name = "Florida", Abbreviation = "FL" },
+            new StateEntity { Name = "Georgia", Abbreviation = "GA" },
+            new StateEntity { Name = "Hawaii", Abbreviation = "HI" },
+            new StateEntity { Name = "Idaho", Abbreviation = "ID" },
+            new StateEntity { Name = "Illinois", Abbreviation = "IL" },
+            new StateEntity { Name = "Indiana", Abbreviation = "IN" },
+            new StateEntity { Name = "Iowa", Abbreviation = "IA" },
+            new StateEntity { Name = "Kansas", Abbreviation = "KS" },
+            new StateEntity { Name = "Kentucky", Abbreviation = "KY" },
+            new StateEntity { Name = "Louisiana", Abbreviation = "LA" },
+            new StateEntity { Name = "Maine", Abbreviation = "ME" },
+            new StateEntity { Name = "Maryland", Abbreviation = "MD" },
+            new StateEntity { Name = "Massachusetts", Abbreviation = "MA" },
+            new StateEntity { Name = "Michigan", Abbreviation = "MI" },
+            new StateEntity { Name = "Minnesota", Abbreviation = "MN" },
+            new StateEntity { Name = "Mississippi", Abbreviation = "MS" },
+            new StateEntity { Name = "Missouri", Abbreviation = "MO" },
+            new StateEntity { Name = "Montana", Abbreviation = "MT" },
+            new StateEntity { Name = "Nebraska", Abbreviation = "NE" },
+            new StateEntity { Name = "Nevada", Abbreviation = "NV" },
+            new StateEntity { Name = "New Hampshire", Abbreviation = "NH" },
+            new StateEntity { Name = "New Jersey", Abbreviation = "NJ" },
+            new StateEntity { Name = "New Mexico", Abbreviation = "NM" },
+            new StateEntity { Name = "New York", Abbreviation = "NY" },
+            new StateEntity { Name = "North Carolina", Abbreviation = "NC" },
+            new StateEntity { Name = "North Dakota", Abbreviation = "ND" },
+            new StateEntity { Name = "Ohio", Abbreviation = "OH" },
+            new StateEntity { Name = "Oklahoma", Abbreviation = "OK" },
+            new StateEntity { Name = "Oregon", Abbreviation = "OR" },
+            new StateEntity { Name = "Pennsylvania", Abbreviation = "PA" },
+            new StateEntity { Name = "Rhode Island", Abbreviation = "RI" },
+            new StateEntity { Name = "South Carolina", Abbreviation = "SC" },
+            new StateEntity { Name = "South Dakota", Abbreviation = "SD" },
+            new StateEntity { Name = "Tennessee", Abbreviation = "TN" },
+            new StateEntity { Name = "Texas", Abbreviation = "TX" },
+            new StateEntity { Name = "Utah", Abbreviation = "UT" },
+            new StateEntity { Name = "Vermont", Abbreviation = "VT" },
+            new StateEntity { Name = "Virginia", Abbreviation = "VA" },
+            new StateEntity { Name = "Washington", Abbreviation = "WA" },
+            new StateEntity { Name = "West Virginia", Abbreviation = "WV" },
+            new StateEntity { Name = "Wisconsin", Abbreviation = "WI" },
+            new StateEntity { Name = "Wyoming", Abbreviation = "WY" }
         };
         #endregion
-        #region Names
-        private readonly List<string> maleNames = new()
-        {
-            "Korbin",
-            "Christopher",
-            "Jorge",
-            "Russell",
-            "Camron",
-            "Aidan",
-            "Darren",
-            "Sonny",
-            "Jackson",
-            "Alexander",
-            "Dillon",
-            "Christian",
-            "Alonso",
-            "Fisher",
-            "Noel",
-            "Lawson",
-            "Franco",
-            "Harrison",
-            "Edgar",
-            "Draven",
-            "Keith",
-            "Jalen",
-            "Victor",
-            "Kylan",
-            "Antonio",
-            "Lincoln",
-            "Cruz",
-            "Abraham",
-            "Cordell",
-            "Junior",
-            "Keaton",
-            "Marc",
-            "Sam",
-            "Trey",
-            "Ernesto",
-            "Reed",
-            "Emilio",
-            "Kendall",
-            "Dayton",
-            "Gerald",
-            "Matteo",
-            "Hector",
-            "Octavio",
-            "Winston",
-            "Ashton",
-            "Everett",
-            "Jonah",
-            "Colten",
-            "Conner",
-            "Jair"
-        };
-        private readonly List<string> femaleNames = new()
-        {
-            "Annabelle",
-            "Evelyn",
-            "Alaina",
-            "Sariah",
-            "Kaitlyn",
-            "Madalynn",
-            "Kayley",
-            "Gina",
-            "Campbell",
-            "Dakota",
-            "Shania",
-            "Nathalia",
-            "Audrina",
-            "Michelle",
-            "Chloe",
-            "Kristin",
-            "Mareli",
-            "Adelyn",
-            "Shaylee",
-            "Karlee",
-            "Josephine",
-            "Aileen",
-            "Beatrice",
-            "Lauryn",
-            "Diya",
-            "Hope",
-            "Emelia",
-            "Iliana",
-            "Jessie",
-            "Annalise",
-            "Karissa",
-            "Karlie",
-            "Lucia",
-            "Livia",
-            "Kiara",
-            "Diana",
-            "Zariah",
-            "Amara",
-            "Jazmine",
-            "Rosemary",
-            "Kenley",
-            "Lilah",
-            "Karla",
-            "Mariela",
-            "Abigail",
-            "Aimee",
-            "Makaila",
-            "Ariana",
-            "Jordyn",
-            "Arabella"
-        };
-        private readonly List<string> lastNames = new()
-            {
-                "Martinez",
-                "Leon",
-                "Key",
-                "Miller",
-                "Zuniga",
-                "Guerrero",
-                "Green",
-                "Roy",
-                "Villarreal",
-                "Olsen",
-                "Elliott",
-                "Moreno",
-                "Russo",
-                "Flynn",
-                "Jackson",
-                "Dunlap",
-                "Mathews",
-                "Montoya",
-                "Kramer",
-                "Roach",
-                "Chandler",
-                "Cuevas",
-                "Nelson",
-                "Zamora",
-                "Griffith",
-                "Preston",
-                "Baker",
-                "Mcfarland",
-                "Cox",
-                "Gross",
-                "Gallagher",
-                "Dalton",
-                "Cameron",
-                "Paul",
-                "Ponce",
-                "Osborne",
-                "Quinn",
-                "Oconnor",
-                "Fitzgerald",
-                "Gray",
-                "Barrera",
-                "Small",
-                "Reyes",
-                "Greer",
-                "Wagner",
-                "Hickman",
-                "Willis",
-                "Glass",
-                "Peterson",
-                "Cannon"
-            };
-        private readonly List<string> dogNames = new()
-        {
-            "Millie",
-            "Maggie",
-            "Winston",
-            "Athena",
-            "Max",
-            "Sugar",
-            "Samantha",
-            "Kobe",
-            "Zeus",
-            "Lucky",
-            "Frankie",
-            "Nikki",
-            "Cocoa",
-            "Callie",
-            "Bud",
-            "Whiskey",
-            "Layla",
-            "Katie",
-            "Oakley",
-            "Dodger",
-            "Sparky",
-            "Minnie",
-            "Nala",
-            "Jax",
-            "Brady"
-        };
-        private readonly List<string> catNames = new()
-        {
-            "Dusty",
-            "Felix",
-            "Misty",
-            "Zoe",
-            "Murphy",
-            "Sweetie",
-            "Twiggy",
-            "Pumpkin",
-            "Salem",
-            "BatMan",
-            "Loki",
-            "Emma",
-            "Belle",
-            "Beyonce",
-            "Izzy",
-            "Tucker",
-            "Fiona",
-            "Daisy",
-            "Cher",
-            "Chloe",
-            "Milo",
-            "Harley",
-            "Sebastian",
-            "Houdini",
-            "Sox"
-        };
-        private readonly List<string> streetNames = new()
-        {
-            "Lincoln Avenue",
-            "Fairway Drive",
-            "Magnolia Avenue",
-            "Cherry Street",
-            "Union Street",
-            "14th Street",
-            "Railroad Street",
-            "Cedar Court",
-            "5th Street North",
-            "Water Street",
-            "Evergreen Drive",
-            "Route 5",
-            "Monroe Street",
-            "Main Street",
-            "Belmont Avenue",
-            "Delaware Avenue",
-            "Route 70",
-            "Willow Drive",
-            "Winding Way",
-            "Main Street East",
-            "Charles Street",
-            "Linden Avenue",
-            "Creekside Drive",
-            "Aspen Drive",
-            "Route 29"
-        };
-        private readonly List<string> cityNames = new()
-        {
-            "San Francisco",
-            "Laredo",
-            "San Antonio",
-            "New York",
-            "Columbus",
-            "Chula Vista",
-            "Sacramento",
-            "Riverside",
-            "Baton Rouge",
-            "Seattle",
-            "Tucson",
-            "Henderson",
-            "Oakland",
-            "Norfolk",
-            "St. Paul",
-            "Albuquerque",
-            "Omaha",
-            "Garland",
-            "Chesapeake",
-            "Jersey City",
-            "Milwaukee",
-            "Chicago",
-            "Boston",
-            "Plano",
-            "San Jose"
-        };
-        private readonly List<string> phoneNumbers = new()
-        {
-            "(765) 672-5153",
-            "(894) 665-9706",
-            "(959) 884-5875",
-            "(885) 627-2881",
-            "(624) 362-5570",
-            "(841) 575-2288",
-            "(421) 299-2107",
-            "(645) 278-4056",
-            "(301) 243-1221",
-            "(269) 265-6491",
-            "(490) 616-2627",
-            "(376) 203-1024",
-            "(898) 549-8756",
-            "(335) 822-3627",
-            "(519) 505-2241",
-            "(291) 854-4379",
-            "(682) 235-8187",
-            "(866) 800-9359",
-            "(892) 314-8082",
-            "(499) 884-0985",
-            "(425) 396-0113",
-            "(971) 564-0493",
-            "(594) 908-7295",
-            "(222) 268-1881",
-            "(583) 533-4985"
-        };
-        #endregion
-        private readonly int[] numbers = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        private readonly IRandomHouseholdMaker householdMaker;
+        private readonly IRandomUserMaker userMaker;
+        private readonly IRandomAppointmentMaker appointmentMaker;
         private readonly Random rand = new();
 
-        private PetBreedEntity RandomDogBreed
-        {
-            get { return GetRandomElement(dogBreeds); }
-        }
-
-        private PetBreedEntity RandomCatBreed
-        {
-            get { return GetRandomElement(catBreeds); }
-        }
-
-        private StateEntity RandomState
-        {
-            get { return GetRandomElement(states); }
-        }
-
-        private bool RandomBool
-        {
-            get { return rand.Next(1, 101) > 50; }
-        }
-
-        private string RandomLastName
-        {
-            get { return GetRandomElement(lastNames); }
-        }
-
-        private string RandomPhoneNumber
-        {
-            get { return GetRandomElement(phoneNumbers); }
-        }
-
-        private string RandomCityName
-        {
-            get { return GetRandomElement(cityNames); }
-        }
-
-        private string RandomStreetName
-        {
-            get { return GetRandomElement(streetNames); }
-        }
-
-        private string RandomDogName
-        {
-            get { return GetRandomElement(dogNames); }
-        }
-
-        private string RandomCatName
-        {
-            get { return GetRandomElement(catNames); }
-        }
-
-        private string RandomMaleName
-        {
-            get { return GetRandomElement(maleNames); }
-        }
-
-        private string RandomFemaleName
-        {
-            get { return GetRandomElement(femaleNames); }
-        }
-
-        public SeedService(IUnitOfWork uow, IMapper mapper)
+        public SeedService(IUnitOfWork uow,
+            IMapper mapper,
+            IRandomHouseholdMaker householdMaker,
+            IRandomUserMaker userMaker,
+            IRandomAppointmentMaker appointmentMaker)
             : base(uow, mapper)
         {
-        }
-
-        public T GetRandomElement<T>(IEnumerable<T> elements)
-        {
-            return elements.ElementAt(rand.Next(1, elements.Count()));
-        }
-
-        public string GetRandomDigits(int numDigits)
-        {
-            var digits = string.Empty;
-            while (digits.Length < numDigits)
-            {
-                digits += GetRandomElement(numbers).ToString();
-            }
-
-            return digits;
+            this.userMaker = userMaker;
+            this.householdMaker = householdMaker;
+            this.appointmentMaker = appointmentMaker;
         }
 
         public void Seed()
@@ -730,10 +362,12 @@ namespace VetAwesome.Bll.Services
             DeleteAll();
 
             InsertRoles();
-            InsertUsers();
             InsertPetTypes();
             InsertStates();
+
+            InsertUsers();
             InsertHouseholds();
+            InsertAppointments();
         }
 
         private void DeleteAll()
@@ -746,81 +380,54 @@ namespace VetAwesome.Bll.Services
             uow.Households.Delete(uow.Households.ReadAll().ToArray());
             uow.Users.Delete(uow.Users.ReadAll().ToArray());
             uow.Roles.Delete(uow.Roles.ReadAll().ToArray());
+            uow.States.Delete(uow.States.ReadAll().ToArray());
 
             uow.Commit();
         }
 
-        public void CreateAppointments(IEnumerable<Appointment> appointments)
+        private void InsertAppointments()
         {
-            uow.Appointments.CreateRange(mapper.Map<IEnumerable<AppointmentEntity>>(appointments));
-            uow.Commit();
-        }
-
-        public PetEntity MakePet()
-        {
-            var breeds = dogBreeds;
-            var names = dogNames;
-            if (RandomBool)
+            var appointments = new List<AppointmentEntity>();
+            var startTime = new TimeOnly(8, 0, 0);
+            for (var i = 0; i < 32; i++)
             {
-                breeds = catBreeds;
-                names = catNames;
+                appointments.AddRange(appointmentMaker.MakeAppointments(startTime.AddMinutes(i * 15)));
             }
 
-            return new PetEntity
-            {
-                Name = GetRandomElement(names),
-                PetBreed = GetRandomElement(breeds)
-            };
+            uow.Appointments.CreateRange(appointments);
+            uow.Commit();
         }
 
         private void InsertPetTypes()
         {
             var cat = uow.PetTypes.Create(new PetTypeEntity { Name = "Cat" });
-            catBreeds.ForEach(breed => breed.PetType = cat);
-            catBreeds = uow.PetBreeds.CreateRange(catBreeds).ToList();
+            foreach (var catBreed in catBreedEntities)
+            {
+                catBreed.PetType = cat;
+            }
+            catBreedEntities = uow.PetBreeds.CreateRange(catBreedEntities).ToList();
 
             var dog = uow.PetTypes.Create(new PetTypeEntity { Name = "Dog" });
-            dogBreeds.ForEach(breed => breed.PetType = dog);
-            dogBreeds = uow.PetBreeds.CreateRange(dogBreeds).ToList();
-
-            uow.Commit();
+            foreach (var dogBreed in dogBreedEntities)
+            {
+                dogBreed.PetType = dog;
+            }
+            dogBreedEntities = uow.PetBreeds.CreateRange(dogBreedEntities).ToList();
         }
 
         private void InsertStates()
         {
-            states = uow.States.CreateRange(states).ToList();
+            stateEntities = uow.States.CreateRange(stateEntities).ToList();
             uow.Commit();
-        }
-
-        private CustomerEntity MakeCustomer(bool isMale, string? lastName = null)
-        {
-            var firstName = isMale ? RandomMaleName : RandomFemaleName;
-            lastName ??= RandomLastName;
-            return new CustomerEntity
-            {
-                Name = $"{firstName} {lastName}",
-                PhoneNumber = RandomPhoneNumber
-            };
-        }
-
-        private string GetRandomZipCode()
-        {
-            var zipCode = GetRandomDigits(5);
-            if (!RandomBool)
-            {
-                return zipCode;
-            }
-
-            return $"{zipCode}-{GetRandomDigits(4)}";
         }
 
         private void InsertHouseholds()
         {
-            var numHouseholds = rand.Next(10, 101);
+            var numHouseholds = rand.Next(30, 101);
             var households = new List<HouseholdEntity>();
             for (var i = 0; i < numHouseholds; i++)
             {
-                households.Add(MakeHousehold());
+                households.Add(householdMaker.MakeHousehold());
             }
 
             uow.Households.CreateRange(households);
@@ -829,60 +436,27 @@ namespace VetAwesome.Bll.Services
 
         public void InsertUsers()
         {
-            uow.Users.Create(MakeUser(RoleType.Secretary));
-            uow.Users.Create(MakeUser(RoleType.Owner));
+            uow.Users.Create(userMaker.MakeUser(RoleType.Secretary));
+            uow.Users.Create(userMaker.MakeUser(RoleType.Owner));
 
-            var numVets = rand.Next(3, 7);
-            for (var i = 0; i < numVets; i++)
+            for (var i = 0; i < 3; i++)
             {
-                uow.Users.Create(MakeUser(RoleType.Veterinarian));
+                uow.Users.Create(userMaker.MakeUser(RoleType.Veterinarian));
             }
 
             uow.Commit();
-        }
-
-        private UserEntity MakeUser(RoleType role)
-        {
-            var firstName = RandomBool ? RandomMaleName : RandomFemaleName;
-            return new UserEntity()
-            {
-                Name = $"{firstName} {RandomLastName}",
-                RoleId = (int)role
-            };
-        }
-
-        private HouseholdEntity MakeHousehold()
-        {
-            var household = new HouseholdEntity
-            {
-                StreetAddress1 = $"{GetRandomDigits(5)} {RandomStreetName}",
-                City = RandomCityName,
-                State = RandomState,
-                ZipCode = GetRandomZipCode(),
-                PhoneNumber = RandomPhoneNumber
-            };
-
-            var lastName = RandomLastName;
-            if (RandomBool)
-            {
-                household.Customers.Add(MakeCustomer(true, lastName));
-            }
-            household.Customers.Add(MakeCustomer(false, lastName));
-
-            var petCount = rand.Next(1, 5);
-            for (var i = 0; i < petCount; i++)
-            {
-                household.Pets.Add(MakePet());
-            }
-
-            return household;
         }
 
         public void InsertRoles()
         {
             foreach (var roleType in Enum.GetValues<RoleType>())
             {
-                var role = new RoleEntity() { Name = roleType.ToString(), Id = (int)roleType };
+                var role = new RoleEntity()
+                {
+                    Name = roleType.ToString(),
+                    Id = (int)roleType
+                };
+
                 uow.Roles.Create(role);
             }
 

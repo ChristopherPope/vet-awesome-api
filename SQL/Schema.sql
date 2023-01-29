@@ -1,23 +1,4 @@
 USE [VET-AWESOME-DEV]
-GO
-/****** Object:  Table [dbo].[Appointment]    Script Date: 1/28/2023 5:05:10 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Appointment](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CustomerId] [int] NOT NULL,
-	[PetId] [int] NOT NULL,
-	[VeterinarianId] [int] NOT NULL,
-	[StartTime] [datetime] NOT NULL,
-	[EndTime] [datetime] NOT NULL,
- CONSTRAINT [PK_Appointment] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
 /****** Object:  Table [dbo].[Appointments]    Script Date: 1/28/2023 5:05:10 PM ******/
 SET ANSI_NULLS ON
 GO
