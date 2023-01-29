@@ -19,7 +19,7 @@ namespace VetAwesome.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Authenticate(int userId)
         {
-            HttpContext.Session.SetInt32("UserId", userId);
+            usersSvc.Authenticate(userId);
 
             return NoContent();
         }

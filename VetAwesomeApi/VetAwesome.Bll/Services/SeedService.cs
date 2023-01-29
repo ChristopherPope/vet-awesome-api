@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using VetAwesome.Bll.Enums;
 using VetAwesome.Bll.Interfaces.RandomDataMakers;
 using VetAwesome.Bll.Interfaces.Services;
@@ -347,10 +348,11 @@ namespace VetAwesome.Bll.Services
 
         public SeedService(IUnitOfWork uow,
             IMapper mapper,
+            IHttpContextAccessor httpAccessor,
             IRandomHouseholdMaker householdMaker,
             IRandomUserMaker userMaker,
             IRandomAppointmentMaker appointmentMaker)
-            : base(uow, mapper)
+            : base(uow, mapper, httpAccessor)
         {
             this.userMaker = userMaker;
             this.householdMaker = householdMaker;

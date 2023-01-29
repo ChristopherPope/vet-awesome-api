@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using VetAwesome.Bll.Interfaces.Services;
 
 namespace VetAwesome.Api.Identity
 {
     public class VetAwesomeClaimsTransformation : IClaimsTransformation
     {
         private readonly IHttpContextAccessor http;
-        private readonly IUsersService usersSvc;
 
-        public VetAwesomeClaimsTransformation(IHttpContextAccessor http, IUsersService usersSvc)
+        public VetAwesomeClaimsTransformation(IHttpContextAccessor http)
         {
             this.http = http;
-            this.usersSvc = usersSvc;
         }
 
         public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
