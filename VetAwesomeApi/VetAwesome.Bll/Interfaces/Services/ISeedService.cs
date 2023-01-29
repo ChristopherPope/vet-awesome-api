@@ -2,6 +2,7 @@
 {
     public interface ISeedService
     {
-        void Seed();
+        void SeedAllData();
+        void SeedAppointments();
     }
 }

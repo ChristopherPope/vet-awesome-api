@@ -19,7 +19,7 @@ namespace VetAwesome.Api.Controllers
         [SwaggerOperation("Delete all data and re-create new data.")]
         public IActionResult Seed()
         {
-            seedSvc.Seed();
+            seedSvc.SeedAllData();
 
             return NoContent();
         }
@@ -30,7 +30,7 @@ namespace VetAwesome.Api.Controllers
         [SwaggerOperation("Delete and re-create appointment data.")]
         public IActionResult SeedAppointments()
         {
-            seedSvc.Seed();
+            seedSvc.SeedAppointments();
 
             return NoContent();
         }

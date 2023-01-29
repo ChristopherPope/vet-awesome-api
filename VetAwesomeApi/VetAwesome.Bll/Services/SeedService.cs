@@ -357,7 +357,13 @@ namespace VetAwesome.Bll.Services
             this.appointmentMaker = appointmentMaker;
         }
 
-        public void Seed()
+        public void SeedAppointments()
+        {
+            DeleteAppointments();
+            InsertAppointments();
+        }
+
+        public void SeedAllData()
         {
             DeleteAll();
 
@@ -372,7 +378,7 @@ namespace VetAwesome.Bll.Services
 
         private void DeleteAll()
         {
-            uow.Appointments.Delete(uow.Appointments.ReadAll().ToArray());
+            DeleteAppointments();
             uow.PetBreeds.Delete(uow.PetBreeds.ReadAll().ToArray());
             uow.PetTypes.Delete(uow.PetTypes.ReadAll().ToArray());
             uow.Pets.Delete(uow.Pets.ReadAll().ToArray());
@@ -382,6 +388,12 @@ namespace VetAwesome.Bll.Services
             uow.Roles.Delete(uow.Roles.ReadAll().ToArray());
             uow.States.Delete(uow.States.ReadAll().ToArray());
 
+            uow.Commit();
+        }
+
+        private void DeleteAppointments()
+        {
+            uow.Appointments.Delete(uow.Appointments.ReadAll().ToArray());
             uow.Commit();
         }
 
