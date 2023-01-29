@@ -95,7 +95,7 @@ namespace VetAwesome.Bll.RandomDataMakers
                 City = GetRandomElement(cityNames),
                 State = GetRandomElement(stateEntities),
                 ZipCode = MakeZipCode(),
-                PhoneNumber = phoneNumberMaker.PhoneNumber,
+                PhoneNumber = phoneNumberMaker.MakePhoneNumber()
             };
 
             foreach (var customer in customerMaker.MakeCoupleOrSingle())

@@ -1,13 +1,7 @@
-﻿using Autofac;
-using Autofac.Extras.Moq;
-using AutoMapper;
-using FluentAssertions;
-using Moq;
-using NUnit.Framework;
+﻿using AutoMapper;
 using VetAwesome.Bll.Dtos;
 using VetAwesome.Bll.Mapping;
 using VetAwesome.Bll.Services;
-using VetAwesome.Dal.Entities;
 using VetAwesome.Dal.Interfaces;
 using VetAwesome.Dal.Interfaces.Persistence.Repositories;
 
@@ -33,8 +27,8 @@ namespace VetAwesome.Bll.Tests.Services
                 return;
             }
 
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(mapper).As<IMapper>());
             // ARRANGE
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(mapper).As<IMapper>());
             var mockUow = mock.Mock<IUnitOfWork>();
             var mockUserRepo = mock.Mock<IUserRepository>();
             mockUow.Setup(u => u.Users).Returns(mockUserRepo.Object);
@@ -61,8 +55,8 @@ namespace VetAwesome.Bll.Tests.Services
         [Test]
         public void Autehenticate()
         {
-            using var mock = AutoMock.GetLoose();
             // ARRANGE
+            using var mock = AutoMock.GetLoose();
             var mockHttpAccessor = mock.Mock<IHttpContextAccessor>();
             var httpContext = new DefaultHttpContext();
             var mockSession = mock.Mock<ISession>();

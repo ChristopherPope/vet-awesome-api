@@ -2,6 +2,6 @@
 {
     public interface IRandomPhoneNumberMaker
     {
-        string PhoneNumber { get; }
+        string MakePhoneNumber();
     }
 }

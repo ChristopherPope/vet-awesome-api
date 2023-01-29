@@ -35,6 +35,9 @@ namespace VetAwesome.Bll.RandomDataMakers
         };
         #endregion
 
-        public string PhoneNumber => GetRandomElement(phoneNumbers);
+        public string MakePhoneNumber()
+        {
+            return GetRandomElement(phoneNumbers);
+        }
     }
 }

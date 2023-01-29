@@ -16,13 +16,13 @@ namespace VetAwesome.Bll.RandomDataMakers
 
         public IEnumerable<CustomerEntity> MakeCoupleOrSingle()
         {
-            var lastName = nameMaker.LastName;
+            var lastName = nameMaker.MakeLastName();
             var customers = new List<CustomerEntity>
             {
                 new CustomerEntity
                 {
-                    Name = $"{nameMaker.FemaleName} {lastName}",
-                    PhoneNumber = phoneNumberMaker.PhoneNumber
+                    Name = $"{nameMaker.MakeFemaleName()} {lastName}",
+                    PhoneNumber = phoneNumberMaker.MakePhoneNumber()
                 }
             };
 
@@ -30,8 +30,8 @@ namespace VetAwesome.Bll.RandomDataMakers
             {
                 customers.Add(new CustomerEntity
                 {
-                    Name = $"{nameMaker.MaleName} {lastName}",
-                    PhoneNumber = phoneNumberMaker.PhoneNumber
+                    Name = $"{nameMaker.MakeMaleName()} {lastName}",
+                    PhoneNumber = phoneNumberMaker.MakePhoneNumber()
                 });
             }
 

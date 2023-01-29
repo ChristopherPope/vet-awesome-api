@@ -17,7 +17,7 @@ namespace VetAwesome.Bll.RandomDataMakers
         {
             return new UserEntity
             {
-                Name = $"{nameMaker.FirstName} {nameMaker.LastName}",
+                Name = $"{nameMaker.MakeFirstName()} {nameMaker.MakeLastName()}",
                 RoleId = (int)userRole
             };
         }

@@ -2,9 +2,9 @@
 {
     public interface IRandomNameMaker
     {
-        public string FirstName { get; }
-        public string MaleName { get; }
-        public string FemaleName { get; }
-        public string LastName { get; }
+        public string MakeFirstName();
+        public string MakeMaleName();
+        public string MakeFemaleName();
+        public string MakeLastName();
     }
 }

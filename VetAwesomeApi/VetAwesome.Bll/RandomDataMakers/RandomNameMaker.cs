@@ -173,9 +173,25 @@ namespace VetAwesome.Bll.RandomDataMakers
             firstNames.AddRange(femaleNames);
         }
 
-        public string FirstName => GetRandomElement(firstNames);
-        public string FemaleName => GetRandomElement(femaleNames);
-        public string MaleName => GetRandomElement(maleNames);
-        public string LastName => GetRandomElement(lastNames);
+        public string MakeFirstName()
+        {
+            return GetRandomElement(firstNames);
+        }
+
+        public string MakeFemaleName()
+        {
+            return GetRandomElement(femaleNames);
+        }
+
+        public string MakeMaleName()
+        {
+            return GetRandomElement(maleNames);
+        }
+
+        public string MakeLastName()
+        {
+            return GetRandomElement(lastNames);
+        }
+
     }
 }
