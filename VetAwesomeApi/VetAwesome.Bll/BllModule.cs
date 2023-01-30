@@ -16,7 +16,8 @@ namespace VetAwesome.Bll
     public class BllModule : Module
     {
         private readonly IServiceCollection services;
-        private readonly string? connectionString;
+        private readonly string? connectionString; // todo: why do we need cs passed in ctor?
+
 
         public BllModule(IServiceCollection services, string? connectionString)
         {

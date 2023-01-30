@@ -192,6 +192,5 @@ namespace VetAwesome.Bll.RandomDataMakers
         {
             return GetRandomElement(lastNames);
         }
-
     }
 }

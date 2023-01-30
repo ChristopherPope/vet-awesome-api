@@ -11,7 +11,7 @@ namespace VetAwesome.Bll.RandomDataMakers
         private readonly IUnitOfWork uow;
         private readonly Lazy<List<UserEntity>> allVets;
         private readonly Lazy<List<HouseholdEntity>> households;
-        List<(int vetId, TimeOnly startTime, TimeOnly endTime)> unavailableVets = new();
+        private readonly List<(int vetId, TimeOnly startTime, TimeOnly endTime)> unavailableVets = new();
         private List<UserEntity> AllVets => allVets.Value;
         private List<HouseholdEntity> Households => households.Value;
 
@@ -46,9 +46,9 @@ namespace VetAwesome.Bll.RandomDataMakers
                 var appointment = appointments.Last();
                 unavailableVets.Add(
                     (
-                    vetId: appointment.Veterinarian.Id,
-                    startTime: TimeOnly.FromDateTime(appointment.StartTime),
-                    endTime: TimeOnly.FromDateTime(appointment.EndTime)
+                        vetId: appointment.Veterinarian.Id,
+                        startTime: TimeOnly.FromDateTime(appointment.StartTime),
+                        endTime: TimeOnly.FromDateTime(appointment.EndTime)
                     ));
 
                 vets.Remove(appointment.Veterinarian);
