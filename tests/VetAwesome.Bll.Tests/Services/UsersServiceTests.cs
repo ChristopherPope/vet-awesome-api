@@ -12,7 +12,7 @@ namespace VetAwesome.Bll.Tests.Services
         private IMapper? mapper;
 
         [OneTimeSetUp]
-        public void SetupFixture()
+        public void OneTimeSetUp()
         {
             var mappingConfig = new MapperConfiguration(cfg => cfg.AddMaps(new Type[] { typeof(ModelMapping) }));
             mapper = mappingConfig.CreateMapper();
