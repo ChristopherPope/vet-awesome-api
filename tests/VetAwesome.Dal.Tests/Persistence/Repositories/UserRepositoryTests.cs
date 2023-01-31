@@ -1,43 +1,23 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
-
-namespace VetAwesome.Dal.Persistence.Repositories
+﻿namespace VetAwesome.Dal.Tests.Persistence.Repositories
 {
-    public class UserRepositoryTests : IDisposable
+    public class UserRepositoryTests : RepositoryTests
     {
-        private readonly DbContextOptions<VetDbContext> dbContextOptions;
-        private readonly DbConnection dbConnection;
-
-        public UserRepositoryTests()
-        {
-            dbConnection = new SqliteConnection("Filename=:memory:");
-            dbConnection.Open();
-
-            dbContextOptions = new DbContextOptionsBuilder<VetDbContext>()
-                .UseSqlite(dbConnection)
-                .Options;
-
-            using var dbContext = CreateContext();
-            dbContext.Database.EnsureCreated();
-        }
-
-        public void Dispose() => dbConnection.Dispose();
-
-        private VetDbContext CreateContext() => new(dbContextOptions);
-
         [Test]
         public void ReadUsers()
         {
             // ARRANGE
             var dbContext = CreateContext();
-            using var mock = AutoMock.GetLoose(); // cfg => cfg.RegisterInstance(dbContext).As<VetDbContext>());
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
+            var roles = new List<RoleEntity> { new RoleEntity { Name = "President", Id = 1 } };
+            dbContext.AddRange(roles);
+
             var users = new List<UserEntity>
             {
-                new UserEntity { Name = "Road Runner" },
-                new UserEntity { Name = "Bugs Bunny" }
+                new UserEntity { Name = "Road Runner", RoleId = 1 },
+                new UserEntity { Name = "Bugs Bunny", RoleId = 1 }
             };
             dbContext.AddRange(users);
+            dbContext.SaveChanges();
 
             var expectedUsers = new List<UserEntity>(users);
             expectedUsers.Reverse();
