@@ -6,10 +6,11 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
 {
     public abstract class RepositoryTests
     {
-        protected readonly DbContextOptions<VetDbContext> dbContextOptions;
-        protected readonly DbConnection dbConnection;
+        protected DbContextOptions<VetDbContext> dbContextOptions;
+        protected DbConnection dbConnection;
 
-        public RepositoryTests()
+        [SetUp]
+        public void SetUp()
         {
             dbConnection = new SqliteConnection("Filename=:memory:");
             dbConnection.Open();
@@ -20,6 +21,16 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
 
             using var dbContext = CreateContext();
             dbContext.Database.EnsureCreated();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            using (var dbContext = CreateContext())
+            {
+                dbContext.Database.EnsureDeleted();
+                dbConnection.Close();
+            }
         }
 
         public void Dispose() => dbConnection.Dispose();

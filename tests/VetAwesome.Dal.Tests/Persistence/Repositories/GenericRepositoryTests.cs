@@ -53,6 +53,7 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             // ARRANGE
             using var dbContext = CreateContext();
             using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
+
             CreateRoles(dbContext);
             var expectedUsers = MakeUsers();
             var repo = mock.Create<GenericRepository<UserEntity>>();
