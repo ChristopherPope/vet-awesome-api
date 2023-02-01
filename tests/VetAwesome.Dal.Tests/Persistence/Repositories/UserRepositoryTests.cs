@@ -6,30 +6,18 @@
         public void ReadUsers()
         {
             // ARRANGE
-            var dbContext = CreateContext();
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            var roles = new List<RoleEntity> { new RoleEntity { Name = "President", Id = 1 } };
-            dbContext.AddRange(roles);
-
-            var users = new List<UserEntity>
-            {
-                new UserEntity { Name = "Road Runner", RoleId = 1 },
-                new UserEntity { Name = "Bugs Bunny", RoleId = 1 }
-            };
-            dbContext.AddRange(users);
-            dbContext.SaveChanges();
-
-            var expectedUsers = new List<UserEntity>(users);
-            expectedUsers.Reverse();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
+            var users = CreateRandomUsers();
+            var expectedUsers = users.OrderBy(users => users.Name).ToList();
 
             var repo = mock.Create<UserRepository>();
 
             // ACT
-            var actualUsers = repo.ReadUsers();
+            var actualUsers = repo.ReadUsers().ToList();
 
             // ASSERT
             actualUsers.Should().NotBeNull();
-            actualUsers.Should().Equal(expectedUsers);
+            actualUsers.Should().BeEquivalentTo(expectedUsers);
         }
     }
 }

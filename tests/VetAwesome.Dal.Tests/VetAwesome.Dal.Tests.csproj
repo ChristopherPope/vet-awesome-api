@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\VetAwesomeApi\VetAwesome.Bll\VetAwesome.Bll.csproj" />
     <ProjectReference Include="..\..\VetAwesomeApi\VetAwesome.Dal\VetAwesome.Dal.csproj" />
   </ItemGroup>
 

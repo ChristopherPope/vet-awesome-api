@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data;
 using VetAwesome.Dal.Entities;
 using VetAwesome.Dal.Interfaces.Persistence.Repositories;
 
@@ -14,3 +15,4 @@ namespace VetAwesome.Dal.Persistence.Repositories
         }
     }
 }
+

@@ -22,6 +22,7 @@ namespace VetAwesome.Bll.Mapping
             CreateMap<Pet, PetEntity>();
             CreateMap<User, UserEntity>();
             CreateMap<Role, RoleEntity>();
+            CreateMap<State, StateEntity>();
         }
 
         private void CreateProjections()
@@ -34,6 +35,7 @@ namespace VetAwesome.Bll.Mapping
             CreateProjection<PetBreedEntity, PetBreed>();
             CreateProjection<PetEntity, Pet>();
             CreateProjection<UserEntity, User>();
+            CreateProjection<StateEntity, State>();
         }
     }
 }

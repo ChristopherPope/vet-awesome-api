@@ -1,6 +1,4 @@
-﻿using VetAwesome.Dal.Persistence;
-
-namespace VetAwesome.Dal.Tests.Persistence.Repositories
+﻿namespace VetAwesome.Dal.Tests.Persistence.Repositories
 {
     public class GenericRepositoryTests : RepositoryTests
     {
@@ -8,14 +6,8 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
         public void ReadById()
         {
             // ARRANGE
-            using var dbContext = CreateContext();
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            CreateRoles(dbContext);
-            var users = MakeUsers();
-            dbContext.AddRange(users);
-            dbContext.SaveChanges();
-
-            var expectedUser = users.First();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
+            var expectedUser = CreateRandomUsers().First();
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT
@@ -30,12 +22,8 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
         public void ReadAll()
         {
             // ARRANGE
-            using var dbContext = CreateContext();
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            CreateRoles(dbContext);
-            var expectedUsers = MakeUsers();
-            dbContext.AddRange(expectedUsers);
-            dbContext.SaveChanges();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
+            var expectedUsers = CreateRandomUsers();
 
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
@@ -51,11 +39,8 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
         public void CreateRange()
         {
             // ARRANGE
-            using var dbContext = CreateContext();
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-
-            CreateRoles(dbContext);
-            var expectedUsers = MakeUsers();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
+            var expectedUsers = CreateRandomUsers();
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT
@@ -70,10 +55,8 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
         public void Create()
         {
             // ARRANGE
-            using var dbContext = CreateContext();
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            CreateRoles(dbContext);
-            var expectedUser = MakeUsers().First();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
+            var expectedUser = CreateRandomUsers().First();
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT
@@ -90,10 +73,7 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             // ARRANGE
             using var dbContext = CreateContext();
             using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            CreateRoles(dbContext);
-            var expectedUsers = MakeUsers().ToList();
-            dbContext.AddRange(expectedUsers);
-            dbContext.SaveChanges();
+            var expectedUsers = CreateRandomUsers().ToList();
 
             var userToRemove = expectedUsers.First();
             expectedUsers.Remove(userToRemove);
@@ -115,10 +95,7 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             // ARRANGE
             using var dbContext = CreateContext();
             using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            CreateRoles(dbContext);
-            var user = MakeUsers().First();
-            dbContext.AddRange(user);
-            dbContext.SaveChanges();
+            var user = CreateRandomUsers().First();
 
             var expectedUser = new UserEntity { Name = "New Name", RoleId = user.RoleId, Role = user.Role, Id = user.Id };
             dbContext.Entry(user).State = EntityState.Detached;
@@ -138,12 +115,8 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
         public void IsEmtpy()
         {
             // ARRANGE
-            using var dbContext = CreateContext();
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            CreateRoles(dbContext);
-            dbContext.AddRange(MakeUsers());
-            dbContext.SaveChanges();
-
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
+            CreateRandomUsers();
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT
@@ -151,21 +124,6 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
 
             // ASSERT
             isEmpty.Should().BeFalse();
-        }
-
-        private IEnumerable<UserEntity> MakeUsers()
-        {
-            return new List<UserEntity>
-            {
-                new UserEntity { Name = "Road Runner", RoleId = 1, Id = 1 },
-                new UserEntity { Name = "Bugs Bunny", RoleId = 1, Id = 2 }
-            };
-        }
-
-        private void CreateRoles(VetDbContext dbContext)
-        {
-            dbContext.AddRange(new List<RoleEntity> { new RoleEntity { Name = "President", Id = 1 } });
-            dbContext.SaveChanges();
         }
     }
 }
