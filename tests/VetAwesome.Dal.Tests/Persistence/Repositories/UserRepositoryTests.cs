@@ -6,8 +6,9 @@
         public void ReadUsers()
         {
             // ARRANGE
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
-            var users = CreateRandomUsers();
+            var dbContext = CreateContext();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
+            var users = CreateRandomUsers(dbContext);
             var expectedUsers = users.OrderBy(users => users.Name).ToList();
 
             var repo = mock.Create<UserRepository>();

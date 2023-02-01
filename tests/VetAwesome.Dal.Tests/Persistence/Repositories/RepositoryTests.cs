@@ -66,9 +66,32 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             return resultElements;
         }
 
-        protected IEnumerable<PetTypeEntity> CreateRandomPetTypes()
+        protected IEnumerable<AppointmentEntity> CreateRandomAppointments(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
+            var vets = EnsureElementsArePresent(CreateRandomUsers, dbContext).Where(u => u.RoleId == (int)RoleType.Veterinarian);
+            var households = EnsureElementsArePresent(CreateRandomHouseholds, dbContext);
+            var startTime = DateTime.Now;
+            for (var i = 0; i < 10; i++)
+            {
+                var household = GetRandomElement(households);
+                dbContext.Add(new AppointmentEntity
+                {
+                    StartTime = startTime,
+                    EndTime = startTime.AddMinutes(30),
+                    Customer = GetRandomElement(household.Customers),
+                    Pet = GetRandomElement(household.Pets),
+                    Veterinarian = GetRandomElement(vets)
+                });
+
+                startTime = startTime.AddDays(1);
+            }
+
+            dbContext.SaveChanges();
+            return dbContext.Set<AppointmentEntity>().ToList();
+        }
+
+        protected IEnumerable<PetTypeEntity> CreateRandomPetTypes(VetDbContext dbContext)
+        {
             for (var i = 0; i < 10; i++)
             {
                 dbContext.Add(new PetTypeEntity { Name = MakeRandomString() });
@@ -78,35 +101,39 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             return dbContext.Set<PetTypeEntity>().ToList();
         }
 
-        protected IEnumerable<PetBreedEntity> CreateRandomPetBreeds()
+        protected IEnumerable<PetBreedEntity> CreateRandomPetBreeds(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
-            var petTypes = EnsureElementsArePresent(CreateRandomPetTypes);
+            var petTypes = EnsureElementsArePresent(CreateRandomPetTypes, dbContext);
             for (var i = 0; i < 10; i++)
             {
-                dbContext.Add(new PetBreedEntity { Name = MakeRandomString(), PetType = GetRandomElement(petTypes) });
+                var petType = GetRandomElement(petTypes);
+                dbContext.Add(new PetBreedEntity { Name = MakeRandomString(), PetType = petType });
             }
 
             dbContext.SaveChanges();
             return dbContext.Set<PetBreedEntity>().ToList();
         }
 
-        protected IEnumerable<PetEntity> CreateRandomPets()
+        protected IEnumerable<PetEntity> CreateRandomPets(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
-            var petBreeds = EnsureElementsArePresent(CreateRandomPetBreeds);
+            var petBreeds = EnsureElementsArePresent(CreateRandomPetBreeds, dbContext);
+            var households = dbContext.Set<HouseholdEntity>().ToList();
             for (var i = 0; i < 10; i++)
             {
-                dbContext.Add(new PetEntity { Name = MakeRandomString(), PetBreed = GetRandomElement(petBreeds) });
+                dbContext.Add(new PetEntity
+                {
+                    Name = MakeRandomString(),
+                    PetBreed = GetRandomElement(petBreeds),
+                    Household = GetRandomElement(households)
+                });
             }
 
             dbContext.SaveChanges();
             return dbContext.Set<PetEntity>().ToList();
         }
 
-        protected IEnumerable<RoleEntity> CreateRoles()
+        protected IEnumerable<RoleEntity> CreateRoles(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
             foreach (var roleType in Enum.GetValues<RoleType>())
             {
                 var role = new RoleEntity()
@@ -122,10 +149,9 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             return dbContext.Set<RoleEntity>().ToList();
         }
 
-        protected IEnumerable<UserEntity> CreateRandomUsers()
+        protected IEnumerable<UserEntity> CreateRandomUsers(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
-            EnsureElementsArePresent(CreateRoles);
+            EnsureElementsArePresent(CreateRoles, dbContext);
             dbContext.Add(new UserEntity { Name = MakeRandomString(), RoleId = (int)RoleType.Secretary });
             dbContext.Add(new UserEntity { Name = MakeRandomString(), RoleId = (int)RoleType.Owner });
             for (var i = 0; i < 10; i++)
@@ -137,21 +163,25 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             return dbContext.Set<UserEntity>().ToList();
         }
 
-        protected IEnumerable<CustomerEntity> CreateRandomCustomers()
+        protected IEnumerable<CustomerEntity> CreateRandomCustomers(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
+            var households = dbContext.Set<HouseholdEntity>().ToList();
             for (var i = 0; i < 10; i++)
             {
-                dbContext.Add(new CustomerEntity { Name = MakeRandomString(), PhoneNumber = MakeRandomString() });
+                dbContext.Add(new CustomerEntity
+                {
+                    Name = MakeRandomString(),
+                    PhoneNumber = MakeRandomString(),
+                    Household = GetRandomElement(households)
+                });
             }
 
             dbContext.SaveChanges();
             return dbContext.Set<CustomerEntity>().ToList();
         }
 
-        protected IEnumerable<StateEntity> CreateRandomStates()
+        protected IEnumerable<StateEntity> CreateRandomStates(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
             for (var i = 0; i < 10; i++)
             {
                 dbContext.Add(new StateEntity { Name = MakeRandomString(), Abbreviation = MakeRandomString() });
@@ -161,42 +191,34 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             return dbContext.Set<StateEntity>().ToList();
         }
 
-        protected IEnumerable<HouseholdEntity> CreateRandomHouseholds()
+        protected IEnumerable<HouseholdEntity> CreateRandomHouseholds(VetDbContext dbContext)
         {
-            using var dbContext = CreateContext();
-            var pets = EnsureElementsArePresent(CreateRandomPets);
-            var customers = EnsureElementsArePresent(CreateRandomCustomers);
-            var states = EnsureElementsArePresent(CreateRandomStates);
+            var states = EnsureElementsArePresent(CreateRandomStates, dbContext);
             for (var i = 0; i < 10; i++)
             {
-                var household = new HouseholdEntity
+                dbContext.Add(new HouseholdEntity
                 {
                     StreetAddress1 = MakeRandomString(),
                     City = MakeRandomString(),
                     ZipCode = MakeRandomString(),
                     State = GetRandomElement(states)
-                };
-                household.Pets.Add(GetRandomElement(pets));
-                household.Pets.Add(GetRandomElement(pets));
-                household.Pets.Add(GetRandomElement(pets));
-
-                household.Customers.Add(GetRandomElement(customers));
-                household.Customers.Add(GetRandomElement(customers));
-
-                dbContext.Add(household);
+                });
             }
 
             dbContext.SaveChanges();
+
+            CreateRandomPets(dbContext);
+            CreateRandomCustomers(dbContext);
+
             return dbContext.Set<HouseholdEntity>().ToList();
         }
 
-        protected IEnumerable<T> EnsureElementsArePresent<T>(Func<IEnumerable<T>> createElements) where T : class
+        protected IEnumerable<T> EnsureElementsArePresent<T>(Func<VetDbContext, IEnumerable<T>> createElements, VetDbContext dbContext) where T : class
         {
-            using var dbContext = CreateContext();
             var elements = dbContext.Set<T>().ToList();
             if (!elements.Any())
             {
-                elements = createElements().ToList();
+                elements = createElements(dbContext).ToList();
             }
 
             return elements.ToList();

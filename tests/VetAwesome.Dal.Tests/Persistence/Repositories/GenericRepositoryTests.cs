@@ -6,8 +6,9 @@
         public void ReadById()
         {
             // ARRANGE
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
-            var expectedUser = CreateRandomUsers().First();
+            var dbContext = CreateContext();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
+            var expectedUser = CreateRandomUsers(dbContext).First();
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT
@@ -22,8 +23,9 @@
         public void ReadAll()
         {
             // ARRANGE
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
-            var expectedUsers = CreateRandomUsers();
+            var dbContext = CreateContext();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
+            var expectedUsers = CreateRandomUsers(dbContext);
 
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
@@ -39,8 +41,9 @@
         public void CreateRange()
         {
             // ARRANGE
+            var dbContext = CreateContext();
             using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
-            var expectedUsers = CreateRandomUsers();
+            var expectedUsers = CreateRandomUsers(dbContext);
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT
@@ -55,8 +58,9 @@
         public void Create()
         {
             // ARRANGE
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
-            var expectedUser = CreateRandomUsers().First();
+            var dbContext = CreateContext();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
+            var expectedUser = CreateRandomUsers(dbContext).First();
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT
@@ -73,7 +77,7 @@
             // ARRANGE
             using var dbContext = CreateContext();
             using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            var expectedUsers = CreateRandomUsers().ToList();
+            var expectedUsers = CreateRandomUsers(dbContext).ToList();
 
             var userToRemove = expectedUsers.First();
             expectedUsers.Remove(userToRemove);
@@ -95,7 +99,7 @@
             // ARRANGE
             using var dbContext = CreateContext();
             using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
-            var user = CreateRandomUsers().First();
+            var user = CreateRandomUsers(dbContext).First();
 
             var expectedUser = new UserEntity { Name = "New Name", RoleId = user.RoleId, Role = user.Role, Id = user.Id };
             dbContext.Entry(user).State = EntityState.Detached;
@@ -115,8 +119,9 @@
         public void IsEmtpy()
         {
             // ARRANGE
-            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(CreateContext()).As<DbContext>());
-            CreateRandomUsers();
+            var dbContext = CreateContext();
+            using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
+            CreateRandomUsers(dbContext);
             var repo = mock.Create<GenericRepository<UserEntity>>();
 
             // ACT

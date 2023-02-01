@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VetAwesome.Dal.Entities;
+﻿namespace VetAwesome.Dal.Entities;
 
 public partial class PetBreedEntity : Entity
 {
