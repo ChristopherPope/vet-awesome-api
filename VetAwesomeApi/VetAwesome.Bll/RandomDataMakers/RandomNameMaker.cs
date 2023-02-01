@@ -178,16 +178,6 @@ namespace VetAwesome.Bll.RandomDataMakers
             return GetRandomElement(firstNames);
         }
 
-        public string MakeFemaleName()
-        {
-            return GetRandomElement(femaleNames);
-        }
-
-        public string MakeMaleName()
-        {
-            return GetRandomElement(maleNames);
-        }
-
         public string MakeLastName()
         {
             return GetRandomElement(lastNames);

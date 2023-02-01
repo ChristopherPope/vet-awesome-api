@@ -6,7 +6,7 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
     public class RandomCustomerMakerTests
     {
         [Test]
-        public void MakeCoupleOrSingle()
+        public void MakeCustomer()
         {
             // ARRANGE
             using var mock = AutoMock.GetLoose();
@@ -14,22 +14,17 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
             var mockNameMaker = mock.Mock<IRandomNameMaker>();
 
             mockPhoneNumberMaker.Setup(m => m.MakePhoneNumber()).Returns("(111) 222-3333");
-            mockNameMaker.Setup(m => m.MakeMaleName()).Returns("Bugs");
-            mockNameMaker.Setup(m => m.MakeFemaleName()).Returns("Betty");
+            mockNameMaker.Setup(m => m.MakeFirstName()).Returns("Bugs");
             mockNameMaker.Setup(m => m.MakeLastName()).Returns("Bunny");
 
             var maker = mock.Create<RandomCustomerMaker>();
 
             // ACT
-            var actualCustomers = maker.MakeCoupleOrSingle();
+            var actualCustomer = maker.MakeCustomer();
 
             // ASSERT
-            actualCustomers.Should().NotBeNull();
-            actualCustomers.Should().NotBeEmpty();
-            actualCustomers.Should().HaveCountLessThan(3);
-
-            actualCustomers.First().Should().NotBeNull();
-            actualCustomers.Last().Should().NotBeNull();
+            actualCustomer.Should().NotBeNull();
+            actualCustomer.Name.Should().BeEquivalentTo("Bugs Bunny");
         }
     }
 }

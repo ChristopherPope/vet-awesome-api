@@ -8,8 +8,6 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
         {
             (name: "FirstName", makeName: (maker) => maker.MakeFirstName()),
             (name: "LastName", makeName: (maker) => maker.MakeLastName()),
-            (name: "MaleName", makeName: (maker) => maker.MakeMaleName()),
-            (name: "FemaleName", makeName: (maker) => maker.MakeFemaleName()),
         };
 
         [Test]

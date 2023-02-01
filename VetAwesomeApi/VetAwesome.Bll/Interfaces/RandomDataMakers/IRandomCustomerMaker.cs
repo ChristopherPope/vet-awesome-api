@@ -4,6 +4,6 @@ namespace VetAwesome.Bll.Interfaces.RandomDataMakers
 {
     public interface IRandomCustomerMaker
     {
-        IEnumerable<CustomerEntity> MakeCoupleOrSingle();
+        CustomerEntity MakeCustomer();
     }
 }
