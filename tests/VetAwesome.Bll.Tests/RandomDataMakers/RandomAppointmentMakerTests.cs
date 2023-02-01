@@ -14,10 +14,8 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
             var mock = AutoMock.GetLoose();
             var mockUow = mock.Mock<IUnitOfWork>();
             var mockUserRepo = mock.Mock<IUserRepository>();
-            var mockHouseholdRepo = mock.Mock<IHouseholdRepository>();
 
             mockUow.Setup(m => m.Users).Returns(mockUserRepo.Object);
-            mockUow.Setup(m => m.Households).Returns(mockHouseholdRepo.Object);
 
             var vets = new List<UserEntity>
             {
@@ -26,14 +24,6 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
                 MakeVet()
             };
             mockUserRepo.Setup(m => m.ReadAll()).Returns(vets.AsQueryable());
-
-            var households = new List<HouseholdEntity>
-            {
-                MakeHousehold(),
-                MakeHousehold(),
-                MakeHousehold()
-            };
-            mockHouseholdRepo.Setup(m => m.ReadAll()).Returns(households.AsQueryable());
 
             var maker = mock.Create<RandomAppointmentMaker>();
 
@@ -49,28 +39,8 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
             return new UserEntity
             {
                 Name = "Road Runner",
-                RoleId = (int)RoleType.Veterinarian
+                UserRoleId = (int)UserRoleType.Veterinarian
             };
-        }
-
-        private HouseholdEntity MakeHousehold()
-        {
-            var household = new HouseholdEntity
-            {
-                StreetAddress1 = "Fangling Ave."
-            };
-
-            household.Customers.Add(new CustomerEntity
-            {
-                Name = "Bugs Bunny",
-            });
-
-            household.Pets.Add(new PetEntity
-            {
-                Name = "Fred"
-            });
-
-            return household;
         }
     }
 }

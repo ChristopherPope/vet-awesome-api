@@ -4,8 +4,8 @@ using VetAwesome.Dal.Interfaces.Persistence.Repositories;
 
 namespace VetAwesome.Dal.Persistence.Repositories
 {
-    public class HouseholdRepository : GenericRepository<HouseholdEntity>, IHouseholdRepository
+    public class UserRoleRepository : GenericRepository<UserRoleEntity>, IUserRoleRepository
     {
-        public HouseholdRepository(DbContext dbContext) : base(dbContext) { }
+        public UserRoleRepository(DbContext dbContext) : base(dbContext) { }
     }
 }

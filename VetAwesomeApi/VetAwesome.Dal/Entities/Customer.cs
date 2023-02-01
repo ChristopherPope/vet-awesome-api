@@ -1,17 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VetAwesome.Dal.Entities;
+﻿namespace VetAwesome.Dal.Entities;
 
 public partial class CustomerEntity : Entity
 {
     public string Name { get; set; } = null!;
 
-    public string? PhoneNumber { get; set; }
+    public string StreetAddress1 { get; set; } = null!;
 
-    public int HouseholdId { get; set; }
+    public string? StreetAddress2 { get; set; }
 
-    public virtual ICollection<AppointmentEntity> Appointments { get; } = new List<AppointmentEntity>();
+    public string City { get; set; } = null!;
 
-    public virtual HouseholdEntity Household { get; set; } = null!;
+    public string ZipCode { get; set; } = null!;
+
+    public int StateId { get; set; }
+
+    public string? CellPhone { get; set; }
+
+    public string? HomePhone { get; set; }
+
+    public string? WorkPhone { get; set; }
+
+    public virtual ICollection<PetEntity> Pets { get; } = new List<PetEntity>();
+
+    public virtual StateEntity State { get; set; } = null!;
 }

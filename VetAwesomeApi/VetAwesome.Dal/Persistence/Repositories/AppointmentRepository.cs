@@ -13,9 +13,9 @@ namespace VetAwesome.Dal.Persistence.Repositories
             return (from a in entities
                         .Include(a => a.Pet)
                             .ThenInclude(p => p.PetBreed)
-                        .Include(a => a.Customer)
-                            .ThenInclude(c => c.Household)
-                                .ThenInclude(h => h.State)
+                        .Include(a => a.Pet)
+                            .ThenInclude(p => p.Customer)
+                                .ThenInclude(c => c.State)
                     where a.StartTime >= inclusiveStart && a.EndTime <= inclusiveEnd
                     select a);
         }

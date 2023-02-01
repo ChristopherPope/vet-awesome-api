@@ -14,7 +14,7 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
             var mockNameMaker = mock.Mock<IRandomNameMaker>();
             mockNameMaker.Setup(m => m.MakeFirstName()).Returns("Bugs");
             mockNameMaker.Setup(m => m.MakeLastName()).Returns("Bunny");
-            var expectedRole = RoleType.Owner;
+            var expectedRole = UserRoleType.Owner;
 
             var maker = mock.Create<RandomUserMaker>();
 
@@ -24,7 +24,7 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
             // ASSERT
             actualUser.Should().NotBeNull();
             actualUser.Name.Should().NotBeNullOrEmpty();
-            actualUser.RoleId.Should().Be((int)expectedRole);
+            actualUser.UserRoleId.Should().Be((int)expectedRole);
         }
     }
 }

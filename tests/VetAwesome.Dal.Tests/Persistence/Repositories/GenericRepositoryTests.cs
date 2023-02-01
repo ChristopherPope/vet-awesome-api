@@ -101,7 +101,7 @@
             using var mock = AutoMock.GetLoose(cfg => cfg.RegisterInstance(dbContext).As<DbContext>());
             var user = CreateRandomUsers(dbContext).First();
 
-            var expectedUser = new UserEntity { Name = "New Name", RoleId = user.RoleId, Role = user.Role, Id = user.Id };
+            var expectedUser = new UserEntity { Name = "New Name", UserRoleId = user.UserRoleId, UserRole = user.UserRole, Id = user.Id };
             dbContext.Entry(user).State = EntityState.Detached;
             var repo = mock.Create<GenericRepository<UserEntity>>();
 

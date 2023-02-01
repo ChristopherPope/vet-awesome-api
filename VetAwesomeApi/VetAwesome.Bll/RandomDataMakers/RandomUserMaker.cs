@@ -13,12 +13,12 @@ namespace VetAwesome.Bll.RandomDataMakers
             this.nameMaker = nameMaker;
         }
 
-        public UserEntity MakeUser(RoleType userRole)
+        public UserEntity MakeUser(UserRoleType userRole)
         {
             return new UserEntity
             {
                 Name = $"{nameMaker.MakeFirstName()} {nameMaker.MakeLastName()}",
-                RoleId = (int)userRole
+                UserRoleId = (int)userRole
             };
         }
     }

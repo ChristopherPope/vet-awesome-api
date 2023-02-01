@@ -16,21 +16,19 @@ namespace VetAwesome.Bll.Mapping
         {
             CreateMap<Appointment, AppointmentEntity>();
             CreateMap<Customer, CustomerEntity>();
-            CreateMap<Household, HouseholdEntity>();
             CreateMap<PetType, PetTypeEntity>();
             CreateMap<PetBreed, PetBreedEntity>();
             CreateMap<Pet, PetEntity>();
             CreateMap<User, UserEntity>();
-            CreateMap<Role, RoleEntity>();
+            CreateMap<UserRole, UserRoleEntity>();
             CreateMap<State, StateEntity>();
         }
 
         private void CreateProjections()
         {
-            CreateProjection<RoleEntity, Role>();
+            CreateProjection<UserRoleEntity, UserRole>();
             CreateProjection<AppointmentEntity, Appointment>();
             CreateProjection<CustomerEntity, Customer>();
-            CreateProjection<HouseholdEntity, Household>();
             CreateProjection<PetTypeEntity, PetType>();
             CreateProjection<PetBreedEntity, PetBreed>();
             CreateProjection<PetEntity, Pet>();

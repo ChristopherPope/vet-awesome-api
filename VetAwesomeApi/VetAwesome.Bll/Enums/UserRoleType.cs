@@ -1,6 +1,6 @@
 ﻿namespace VetAwesome.Bll.Enums
 {
-    public enum RoleType
+    public enum UserRoleType
     {
         Secretary = 1,
         Veterinarian = 2,

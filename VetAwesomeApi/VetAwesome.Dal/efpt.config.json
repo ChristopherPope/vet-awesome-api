@@ -23,10 +23,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Households]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[PetBreeds]",
          "ObjectType": 0
       },
@@ -39,11 +35,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Roles]",
+         "Name": "[dbo].[States]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[States]",
+         "Name": "[dbo].[UserRoles]",
          "ObjectType": 0
       },
       {

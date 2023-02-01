@@ -341,7 +341,6 @@ namespace VetAwesome.Bll.Services
             new StateEntity { Name = "Wyoming", Abbreviation = "WY" }
         };
         #endregion
-        private readonly IRandomHouseholdMaker householdMaker;
         private readonly IRandomUserMaker userMaker;
         private readonly IRandomAppointmentMaker appointmentMaker;
         private readonly Random rand = new();
@@ -349,13 +348,11 @@ namespace VetAwesome.Bll.Services
         public SeedService(IUnitOfWork uow,
             IMapper mapper,
             IHttpContextAccessor httpAccessor,
-            IRandomHouseholdMaker householdMaker,
             IRandomUserMaker userMaker,
             IRandomAppointmentMaker appointmentMaker)
             : base(uow, mapper, httpAccessor)
         {
             this.userMaker = userMaker;
-            this.householdMaker = householdMaker;
             this.appointmentMaker = appointmentMaker;
         }
 
@@ -374,7 +371,6 @@ namespace VetAwesome.Bll.Services
             InsertStates();
 
             InsertUsers();
-            InsertHouseholds();
             InsertAppointments();
         }
 
@@ -385,9 +381,8 @@ namespace VetAwesome.Bll.Services
             uow.PetTypes.Delete(uow.PetTypes.ReadAll().ToArray());
             uow.Pets.Delete(uow.Pets.ReadAll().ToArray());
             uow.Customers.Delete(uow.Customers.ReadAll().ToArray());
-            uow.Households.Delete(uow.Households.ReadAll().ToArray());
             uow.Users.Delete(uow.Users.ReadAll().ToArray());
-            uow.Roles.Delete(uow.Roles.ReadAll().ToArray());
+            uow.UserRoles.Delete(uow.UserRoles.ReadAll().ToArray());
             uow.States.Delete(uow.States.ReadAll().ToArray());
 
             uow.Commit();
@@ -435,27 +430,14 @@ namespace VetAwesome.Bll.Services
             uow.Commit();
         }
 
-        private void InsertHouseholds()
-        {
-            var numHouseholds = rand.Next(30, 101);
-            var households = new List<HouseholdEntity>();
-            for (var i = 0; i < numHouseholds; i++)
-            {
-                households.Add(householdMaker.MakeHousehold());
-            }
-
-            uow.Households.CreateRange(households);
-            uow.Commit();
-        }
-
         public void InsertUsers()
         {
-            uow.Users.Create(userMaker.MakeUser(RoleType.Secretary));
-            uow.Users.Create(userMaker.MakeUser(RoleType.Owner));
+            uow.Users.Create(userMaker.MakeUser(UserRoleType.Secretary));
+            uow.Users.Create(userMaker.MakeUser(UserRoleType.Owner));
 
             for (var i = 0; i < 3; i++)
             {
-                uow.Users.Create(userMaker.MakeUser(RoleType.Veterinarian));
+                uow.Users.Create(userMaker.MakeUser(UserRoleType.Veterinarian));
             }
 
             uow.Commit();
@@ -463,15 +445,15 @@ namespace VetAwesome.Bll.Services
 
         public void InsertRoles()
         {
-            foreach (var roleType in Enum.GetValues<RoleType>())
+            foreach (var roleType in Enum.GetValues<UserRoleType>())
             {
-                var role = new RoleEntity()
+                var role = new UserRoleEntity()
                 {
                     Name = roleType.ToString(),
                     Id = (int)roleType
                 };
 
-                uow.Roles.Create(role);
+                uow.UserRoles.Create(role);
             }
 
             uow.Commit();

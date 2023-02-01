@@ -9,5 +9,5 @@ public partial class StateEntity : Entity
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<HouseholdEntity> Households { get; } = new List<HouseholdEntity>();
+    public virtual ICollection<CustomerEntity> Customers { get; } = new List<CustomerEntity>();
 }

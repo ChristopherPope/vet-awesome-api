@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int PetBreedId { get; set; }
-        public int HouseholdId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

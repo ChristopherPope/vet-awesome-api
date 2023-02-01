@@ -7,10 +7,9 @@ namespace VetAwesome.Dal.Interfaces
         IStatesRepository States { get; }
         IUserRepository Users { get; }
         ICustomerRepository Customers { get; }
-        IHouseholdRepository Households { get; }
         IPetBreedRepository PetBreeds { get; }
         IPetRepository Pets { get; }
-        IRoleRepository Roles { get; }
+        IUserRoleRepository UserRoles { get; }
         IPetTypeRepository PetTypes { get; }
         IAppointmentRepository Appointments { get; }
 

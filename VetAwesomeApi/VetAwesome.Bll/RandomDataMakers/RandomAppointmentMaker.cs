@@ -10,16 +10,16 @@ namespace VetAwesome.Bll.RandomDataMakers
     {
         private readonly IUnitOfWork uow;
         private readonly Lazy<List<UserEntity>> allVets;
-        private readonly Lazy<List<HouseholdEntity>> households;
+        private readonly Lazy<List<CustomerEntity>> customers;
         private readonly List<(int vetId, TimeOnly startTime, TimeOnly endTime)> unavailableVets = new();
         private List<UserEntity> AllVets => allVets.Value;
-        private List<HouseholdEntity> Households => households.Value;
+        private List<CustomerEntity> Customers => customers.Value;
 
         public RandomAppointmentMaker(IUnitOfWork uow)
         {
             this.uow = uow;
 
-            households = new Lazy<List<HouseholdEntity>>(() => LoadHouseholds());
+            customers = new Lazy<List<CustomerEntity>>(() => LoadCustomers());
             allVets = new Lazy<List<UserEntity>>(() => LoadVets());
         }
 
@@ -31,12 +31,11 @@ namespace VetAwesome.Bll.RandomDataMakers
             while (appointments.Count < numAppointments)
             {
                 var vet = GetRandomElement(vets);
-                var household = GetRandomElement(Households);
+                var household = GetRandomElement(Customers);
                 var endTime = startTime
                     .AddMinutes(rand.Next(1, 5) * 15);
                 appointments.Add(new AppointmentEntity
                 {
-                    Customer = GetRandomElement(household.Customers),
                     Pet = GetRandomElement(household.Pets),
                     Veterinarian = vet,
                     StartTime = SetTimeToToday(startTime),
@@ -77,15 +76,14 @@ namespace VetAwesome.Bll.RandomDataMakers
         {
             return uow.Users
                 .ReadAll()
-                .Where(u => u.RoleId == (int)RoleType.Veterinarian)
+                .Where(u => u.UserRoleId == (int)UserRoleType.Veterinarian)
                 .ToList();
         }
 
-        private List<HouseholdEntity> LoadHouseholds()
+        private List<CustomerEntity> LoadCustomers()
         {
-            return uow.Households
+            return uow.Customers
                 .ReadAll()
-                .Include(h => h.Customers)
                 .Include(h => h.Pets)
                 .ToList();
         }

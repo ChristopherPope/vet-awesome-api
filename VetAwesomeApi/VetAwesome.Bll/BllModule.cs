@@ -41,7 +41,6 @@ namespace VetAwesome.Bll
         private void RegisterRandomDataMakers(ContainerBuilder builder)
         {
             builder.RegisterType<RandomCustomerMaker>().As<IRandomCustomerMaker>().InstancePerLifetimeScope();
-            builder.RegisterType<RandomHouseholdMaker>().As<IRandomHouseholdMaker>().InstancePerLifetimeScope();
             builder.RegisterType<RandomNameMaker>().As<IRandomNameMaker>().InstancePerLifetimeScope();
             builder.RegisterType<RandomPetMaker>().As<IRandomPetMaker>().InstancePerLifetimeScope();
             builder.RegisterType<RandomPhoneNumberMaker>().As<IRandomPhoneNumberMaker>().InstancePerLifetimeScope();

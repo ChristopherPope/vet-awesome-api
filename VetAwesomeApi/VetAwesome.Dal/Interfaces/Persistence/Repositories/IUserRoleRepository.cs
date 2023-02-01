@@ -2,7 +2,7 @@
 
 namespace VetAwesome.Dal.Interfaces.Persistence.Repositories
 {
-    public interface IRoleRepository : IGenericRepository<RoleEntity>
+    public interface IUserRoleRepository : IGenericRepository<UserRoleEntity>
     {
     }
 }

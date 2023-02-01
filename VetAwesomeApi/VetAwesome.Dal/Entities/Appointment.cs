@@ -13,10 +13,6 @@ public partial class AppointmentEntity : Entity
 
     public int VeterinarianId { get; set; }
 
-    public int CustomerId { get; set; }
-
-    public virtual CustomerEntity Customer { get; set; } = null!;
-
     public virtual PetEntity Pet { get; set; } = null!;
 
     public virtual UserEntity Veterinarian { get; set; } = null!;

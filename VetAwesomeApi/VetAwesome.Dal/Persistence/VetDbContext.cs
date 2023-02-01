@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using VetAwesome.Dal.Entities;
 
 namespace VetAwesome.Dal.Persistence;
@@ -20,11 +18,6 @@ public partial class VetDbContext : DbContext
             entity.Property(e => e.EndTime).HasColumnType("datetime");
             entity.Property(e => e.StartTime).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Appointments)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Appointments_Customers");
-
             entity.HasOne(d => d.Pet).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.PetId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -39,42 +32,35 @@ public partial class VetDbContext : DbContext
         modelBuilder.Entity<CustomerEntity>(entity =>
         {
             entity.ToTable("Customers");
-            entity.Property(e => e.Name)
-                .HasMaxLength(100)
-                .IsUnicode(false);
-            entity.Property(e => e.PhoneNumber)
+            entity.Property(e => e.CellPhone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
-
-            entity.HasOne(d => d.Household).WithMany(p => p.Customers)
-                .HasForeignKey(d => d.HouseholdId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Customers_Households");
-        });
-
-        modelBuilder.Entity<HouseholdEntity>(entity =>
-        {
-            entity.ToTable("Households");
             entity.Property(e => e.City)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.PhoneNumber)
+            entity.Property(e => e.HomePhone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.StreetAddress1)
-                .HasMaxLength(250)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.StreetAddress2)
-                .HasMaxLength(250)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.WorkPhone)
+                .HasMaxLength(15)
                 .IsUnicode(false);
             entity.Property(e => e.ZipCode)
                 .HasMaxLength(10)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.State).WithMany(p => p.Households)
+            entity.HasOne(d => d.State).WithMany(p => p.Customers)
                 .HasForeignKey(d => d.StateId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Households_States");
+                .HasConstraintName("FK_Customers_States");
         });
 
         modelBuilder.Entity<PetEntity>(entity =>
@@ -84,10 +70,10 @@ public partial class VetDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Household).WithMany(p => p.Pets)
-                .HasForeignKey(d => d.HouseholdId)
+            entity.HasOne(d => d.Customer).WithMany(p => p.Pets)
+                .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Pets_Households");
+                .HasConstraintName("FK_Pets_Customers");
 
             entity.HasOne(d => d.PetBreed).WithMany(p => p.Pets)
                 .HasForeignKey(d => d.PetBreedId)
@@ -116,15 +102,6 @@ public partial class VetDbContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<RoleEntity>(entity =>
-        {
-            entity.ToTable("Roles");
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-        });
-
         modelBuilder.Entity<StateEntity>(entity =>
         {
             entity.ToTable("States");
@@ -143,10 +120,18 @@ public partial class VetDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
-                .HasForeignKey(d => d.RoleId)
+            entity.HasOne(d => d.UserRole).WithMany(p => p.Users)
+                .HasForeignKey(d => d.UserRoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Users_Role");
+                .HasConstraintName("FK_Users_UserRoles");
+        });
+
+        modelBuilder.Entity<UserRoleEntity>(entity =>
+        {
+            entity.ToTable("UserRoles");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

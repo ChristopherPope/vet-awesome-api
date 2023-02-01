@@ -21,8 +21,7 @@ namespace VetAwesome.Bll.RandomDataMakers
             {
                 new CustomerEntity
                 {
-                    Name = $"{nameMaker.MakeFemaleName()} {lastName}",
-                    PhoneNumber = phoneNumberMaker.MakePhoneNumber()
+                    Name = $"{nameMaker.MakeFemaleName()} {lastName}"
                 }
             };
 
@@ -30,8 +29,7 @@ namespace VetAwesome.Bll.RandomDataMakers
             {
                 customers.Add(new CustomerEntity
                 {
-                    Name = $"{nameMaker.MakeMaleName()} {lastName}",
-                    PhoneNumber = phoneNumberMaker.MakePhoneNumber()
+                    Name = $"{nameMaker.MakeMaleName()} {lastName}"
                 });
             }
 

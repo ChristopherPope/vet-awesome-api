@@ -28,14 +28,8 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
             actualCustomers.Should().NotBeEmpty();
             actualCustomers.Should().HaveCountLessThan(3);
 
-            AssertCustomer(actualCustomers.First());
-            AssertCustomer(actualCustomers.Last());
-        }
-
-        private void AssertCustomer(CustomerEntity customer)
-        {
-            customer.Should().NotBeNull();
-            customer.PhoneNumber.Should().NotBeNullOrEmpty();
+            actualCustomers.First().Should().NotBeNull();
+            actualCustomers.Last().Should().NotBeNull();
         }
     }
 }

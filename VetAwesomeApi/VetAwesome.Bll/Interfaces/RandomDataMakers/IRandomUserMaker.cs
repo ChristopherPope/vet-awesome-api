@@ -5,6 +5,6 @@ namespace VetAwesome.Bll.Interfaces.RandomDataMakers
 {
     public interface IRandomUserMaker
     {
-        UserEntity MakeUser(RoleType userRole);
+        UserEntity MakeUser(UserRoleType userRole);
     }
 }
