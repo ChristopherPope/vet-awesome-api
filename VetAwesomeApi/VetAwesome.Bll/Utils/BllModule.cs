@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +10,7 @@ using VetAwesome.Bll.Services;
 using VetAwesome.Dal.Interfaces;
 using VetAwesome.Dal.Persistence;
 
-namespace VetAwesome.Bll
+namespace VetAwesome.Bll.Utils
 {
     public class BllModule : Module
     {
@@ -32,7 +31,6 @@ namespace VetAwesome.Bll
             RegisterDbContext(builder);
             RegisterRandomDataMakers(builder);
 
-            builder.RegisterType<IHttpContextAccessor>().As<IHttpContextAccessor>().InstancePerLifetimeScope();
             builder.RegisterType<UsersService>().As<IUsersService>().InstancePerLifetimeScope();
             builder.RegisterType<SeedService>().As<ISeedService>().InstancePerLifetimeScope();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();

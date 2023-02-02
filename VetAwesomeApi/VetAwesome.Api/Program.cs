@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 using Serilog;
 using VetAwesome.Api.Extensions;
 using VetAwesome.Api.Identity;
-using VetAwesome.Bll;
+using VetAwesome.Api.Utils;
+using VetAwesome.Bll.Utils;
 
 WebApplicationBuilder webAppBuilder = WebApplication.CreateBuilder(args);
 IServiceCollection services = webAppBuilder.Services;
@@ -19,7 +20,6 @@ webAppBuilder
 
 services
     .AddTransient<IClaimsTransformation, VetAwesomeClaimsTransformation>()
-    .AddHttpContextAccessor()
     .AddDistributedMemoryCache()
     .AddSession()
     .AddVetAwesomeCors()
@@ -28,6 +28,7 @@ services
 
 webAppBuilder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
+    containerBuilder.RegisterModule(new ApiModule(services));
     containerBuilder.RegisterModule(new BllModule(services, configuration.GetConnectionString("VetAwesomeDb")));
 });
 

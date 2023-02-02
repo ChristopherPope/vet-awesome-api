@@ -67,7 +67,9 @@ namespace VetAwesome.Bll.RandomDataMakers
 
         private readonly IRandomNameMaker nameMaker;
         private readonly IRandomPhoneNumberMaker phoneNumberMaker;
-        private readonly List<StateEntity> stateEntities;
+        private readonly Lazy<List<StateEntity>> stateEntities;
+
+        private List<StateEntity> States => stateEntities.Value;
 
         public RandomCustomerMaker(IRandomNameMaker nameMaker,
             IRandomPhoneNumberMaker phoneNumberMaker,
@@ -75,7 +77,7 @@ namespace VetAwesome.Bll.RandomDataMakers
         {
             this.nameMaker = nameMaker;
             this.phoneNumberMaker = phoneNumberMaker;
-            stateEntities = uow.States.ReadAll().ToList();
+            stateEntities = new Lazy<List<StateEntity>>(() => uow.States.ReadAll().ToList());
         }
 
         public CustomerEntity MakeCustomer()
@@ -85,7 +87,7 @@ namespace VetAwesome.Bll.RandomDataMakers
                 Name = $"{nameMaker.MakeFirstName()} {nameMaker.MakeLastName()}",
                 StreetAddress1 = $"{GetRandomDigits(5)} {GetRandomElement(streetNames)}",
                 City = GetRandomElement(cityNames),
-                State = GetRandomElement(stateEntities),
+                StateId = GetRandomElement(States).Id,
                 ZipCode = MakeZipCode(),
                 CellPhone = phoneNumberMaker.MakePhoneNumber()
             };

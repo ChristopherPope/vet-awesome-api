@@ -21,12 +21,12 @@ namespace VetAwesome.Bll.Tests.RandomDataMakers
             var maker = mock.Create<RandomPetMaker>();
 
             // ACT
-            var actualPet = maker.MakePet();
+            var actualPet = maker.MakePets(1).FirstOrDefault();
 
             // ASSERT
             actualPet.Should().NotBeNull();
-            actualPet.Name.Should().NotBeNullOrWhiteSpace();
-            actualPet.PetBreed.Should().NotBeNull();
+            actualPet?.Name.Should().NotBeNullOrWhiteSpace();
+            actualPet?.PetBreed.Should().NotBeNull();
         }
     }
 }

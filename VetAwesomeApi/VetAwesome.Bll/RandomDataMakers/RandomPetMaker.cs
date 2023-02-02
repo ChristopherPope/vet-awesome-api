@@ -69,18 +69,25 @@ namespace VetAwesome.Bll.RandomDataMakers
             this.uow = uow;
         }
 
-        public PetEntity MakePet()
+        public IEnumerable<PetEntity> MakePets(int numPets)
         {
             if (!petBreeds.Any())
             {
+                // todo: use Lazy
                 petBreeds.AddRange(uow.PetBreeds.ReadAll().ToList());
             }
 
-            return new PetEntity
+            List<PetEntity> pets = new List<PetEntity>();
+            while (pets.Count < numPets)
             {
-                Name = GetRandomElement(petNames),
-                PetBreed = GetRandomElement(petBreeds)
-            };
+                pets.Add(new PetEntity
+                {
+                    Name = GetRandomElement(petNames),
+                    PetBreed = GetRandomElement(petBreeds)
+                });
+            }
+
+            return pets;
         }
     }
 }

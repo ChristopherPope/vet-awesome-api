@@ -4,6 +4,6 @@ namespace VetAwesome.Bll.Interfaces.RandomEntityMaker
 {
     public interface IRandomPetMaker
     {
-        PetEntity MakePet();
+        IEnumerable<PetEntity> MakePets(int numPets);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using VetAwesome.Bll.Enums;
 using VetAwesome.Bll.Interfaces.RandomDataMakers;
+using VetAwesome.Bll.Interfaces.RandomEntityMaker;
 using VetAwesome.Bll.Interfaces.Services;
 using VetAwesome.Dal.Entities;
 using VetAwesome.Dal.Interfaces;
@@ -343,17 +344,23 @@ namespace VetAwesome.Bll.Services
         #endregion
         private readonly IRandomUserMaker userMaker;
         private readonly IRandomAppointmentMaker appointmentMaker;
+        private readonly IRandomCustomerMaker customerMaker;
+        private readonly IRandomPetMaker petMaker;
         private readonly Random rand = new();
 
         public SeedService(IUnitOfWork uow,
             IMapper mapper,
             IHttpContextAccessor httpAccessor,
             IRandomUserMaker userMaker,
-            IRandomAppointmentMaker appointmentMaker)
+            IRandomAppointmentMaker appointmentMaker,
+            IRandomCustomerMaker customerMaker,
+            IRandomPetMaker petMaker)
             : base(uow, mapper, httpAccessor)
         {
             this.userMaker = userMaker;
             this.appointmentMaker = appointmentMaker;
+            this.customerMaker = customerMaker;
+            this.petMaker = petMaker;
         }
 
         public void SeedAppointments()
@@ -371,6 +378,9 @@ namespace VetAwesome.Bll.Services
             InsertStates();
 
             InsertUsers();
+
+            InsertCustomers();
+            InsertPets();
             InsertAppointments();
         }
 
@@ -391,6 +401,35 @@ namespace VetAwesome.Bll.Services
         private void DeleteAppointments()
         {
             uow.Appointments.Delete(uow.Appointments.ReadAll().ToArray());
+            uow.Commit();
+        }
+
+        private void InsertCustomers()
+        {
+            var customers = new List<CustomerEntity>();
+            while (customers.Count < 100)
+            {
+                customers.Add(customerMaker.MakeCustomer());
+            }
+
+            uow.Customers.CreateRange(customers);
+            uow.Commit();
+        }
+
+        private void InsertPets()
+        {
+            var customers = uow.Customers.ReadAll().ToList();
+            foreach (var customer in customers)
+            {
+                var pets = petMaker.MakePets(rand.Next(1, 5));
+                foreach (var pet in pets)
+                {
+                    pet.Customer = customer;
+                }
+
+                uow.Pets.CreateRange(pets);
+            }
+
             uow.Commit();
         }
 
