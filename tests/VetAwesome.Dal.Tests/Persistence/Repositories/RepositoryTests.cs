@@ -167,7 +167,11 @@ namespace VetAwesome.Dal.Tests.Persistence.Repositories
             {
                 dbContext.Add(new CustomerEntity
                 {
-                    Name = MakeRandomString()
+                    Name = MakeRandomString(),
+                    StreetAddress1 = MakeRandomString(),
+                    City = MakeRandomString(),
+                    ZipCode = "23423",
+                    State = new StateEntity { Name = "Georgia", Abbreviation = "GA" }
                 });
             }
 

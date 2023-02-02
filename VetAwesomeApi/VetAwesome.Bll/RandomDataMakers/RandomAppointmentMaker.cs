@@ -31,12 +31,12 @@ namespace VetAwesome.Bll.RandomDataMakers
             while (appointments.Count < numAppointments)
             {
                 var vet = GetRandomElement(vets);
-                var household = GetRandomElement(Customers);
+                var customer = GetRandomElement(Customers);
                 var endTime = startTime
                     .AddMinutes(rand.Next(1, 5) * 15);
                 appointments.Add(new AppointmentEntity
                 {
-                    Pet = GetRandomElement(household.Pets),
+                    Pet = GetRandomElement(customer.Pets),
                     Veterinarian = vet,
                     StartTime = SetTimeToToday(startTime),
                     EndTime = SetTimeToToday(endTime)
