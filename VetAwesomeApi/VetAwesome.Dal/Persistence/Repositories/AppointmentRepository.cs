@@ -13,6 +13,7 @@ namespace VetAwesome.Dal.Persistence.Repositories
             return (from a in entities
                         .Include(a => a.Pet)
                             .ThenInclude(p => p.PetBreed)
+                        .Include(a => a.Veterinarian)
                         .Include(a => a.Pet)
                             .ThenInclude(p => p.Customer)
                                 .ThenInclude(c => c.State)

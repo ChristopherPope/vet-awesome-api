@@ -31,7 +31,8 @@ namespace VetAwesome.Bll.Utils
             RegisterDbContext(builder);
             RegisterRandomDataMakers(builder);
 
-            builder.RegisterType<UsersService>().As<IUsersService>().InstancePerLifetimeScope();
+            builder.RegisterType<AppointmentService>().As<IAppointmentService>().InstancePerLifetimeScope();
+            builder.RegisterType<SeedService>().As<ISeedService>().InstancePerLifetimeScope();
             builder.RegisterType<SeedService>().As<ISeedService>().InstancePerLifetimeScope();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
         }
