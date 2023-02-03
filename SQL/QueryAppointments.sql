@@ -1,11 +1,8 @@
-select a.StartTime, a.EndTime, c.Name, c.PhoneNumber 'CustomerPhone', h.PhoneNumber 'HouseholdPhone', p.Name 'PetName', 
-pt.Name 'Animal', pb.Name 'Breed', u.Name 'Veterinarian', r.Name 'UserRole'
-from Appointments a
-inner join Customers c on a.CustomerId = c.Id
+select a.Id 'AppointmentId', a.StartTime, a.EndTime, c.Name, c.CellPhone, p.Name 'PetName', t.Name 'TypeOfPet', b.Name 'Breed Name',
+u.Name 'Vet' from Appointments a
 inner join Pets p on a.PetId = p.Id
+inner join PetBreeds b on p.PetBreedId = b.Id
+inner join PetTypes t on b.PetTypeId = t.Id
 inner join Users u on a.VeterinarianId = u.Id
-inner join PetBreeds pb on p.PetBreedId = pb.Id
-inner join PetTypes pt on pb.PetTypeId = pt.Id
-inner join Roles r on u.RoleId = r.Id
-inner join Households h on c.HouseholdId = h.Id
-order by StartTime
+inner join Customers c on p.CustomerId = c.Id
+order by a.StartTime
