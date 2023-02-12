@@ -31,8 +31,10 @@ namespace VetAwesome.Bll.Mapping
             CreateProjection<PetTypeEntity, PetType>();
             CreateProjection<PetBreedEntity, PetBreed>();
             CreateProjection<PetEntity, Pet>();
-            CreateProjection<UserEntity, User>();
             CreateProjection<StateEntity, State>();
+
+            CreateProjection<UserEntity, User>()
+                .ForMember(dest => dest.RoleId, cfg => cfg.MapFrom(src => src.UserRoleId));
 
             CreateProjection<AppointmentEntity, Appointment>()
                 .ForMember(dest => dest.Veterinarian, cfg => cfg.MapFrom(src => src.Veterinarian.Name))

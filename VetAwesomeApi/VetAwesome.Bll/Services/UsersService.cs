@@ -23,7 +23,6 @@ namespace VetAwesome.Bll.Services
         public IEnumerable<User> GetUsers()
         {
             var query = uow.Users.ReadUsers();
-            var l = query.ToList();
 
             return mapper.ProjectTo<User>(query).ToList();
         }
