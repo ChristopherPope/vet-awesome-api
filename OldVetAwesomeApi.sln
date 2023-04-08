@@ -11,15 +11,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{6A2B62B1-FB6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{672840B3-A03E-4FBF-BA09-52DDEDACBFA9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Api", "VetAwesomeApi\VetAwesome.Api\VetAwesome.Api.csproj", "{BF204150-FBD7-42C5-A0C9-6F22372D635F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Api", "OldVetAwesomeApi\VetAwesome.Api\VetAwesome.Api.csproj", "{BF204150-FBD7-42C5-A0C9-6F22372D635F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Bll", "VetAwesomeApi\VetAwesome.Bll\VetAwesome.Bll.csproj", "{B0A51F16-5692-4E5E-B535-FC1D0BBCCF1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Bll", "OldVetAwesomeApi\VetAwesome.Bll\VetAwesome.Bll.csproj", "{B0A51F16-5692-4E5E-B535-FC1D0BBCCF1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Dal", "VetAwesomeApi\VetAwesome.Dal\VetAwesome.Dal.csproj", "{82080EC3-A307-492B-A318-263D6436BCBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Dal", "OldVetAwesomeApi\VetAwesome.Dal\VetAwesome.Dal.csproj", "{82080EC3-A307-492B-A318-263D6436BCBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Bll.Tests", "tests\VetAwesome.Bll.Tests\VetAwesome.Bll.Tests.csproj", "{50C83CEC-79F8-437B-9CAD-199B2BDC9884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Bll.Tests", "OldTests\VetAwesome.Bll.Tests\VetAwesome.Bll.Tests.csproj", "{50C83CEC-79F8-437B-9CAD-199B2BDC9884}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Dal.Tests", "tests\VetAwesome.Dal.Tests\VetAwesome.Dal.Tests.csproj", "{41E13336-9088-411D-B071-3342FF75AAD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Dal.Tests", "OldTests\VetAwesome.Dal.Tests\VetAwesome.Dal.Tests.csproj", "{41E13336-9088-411D-B071-3342FF75AAD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
