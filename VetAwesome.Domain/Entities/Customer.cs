@@ -5,26 +5,45 @@ namespace VetAwesome.Domain.Entities;
 
 public sealed class Customer : Entity<CustomerId>
 {
-    public Customer()
+    private Customer(
+        string name,
+        string streetAddress,
+        string city,
+        string zip,
+        StateId stateId,
+        string phone
+        )
+        : base(0)
+    {
+        Name = name;
+        StreetAddress = streetAddress;
+        City = city;
+        ZipCode = zip;
+        StateId = stateId;
+        Phone = phone;
+    }
+
+    private Customer()
         : base(0)
     {
     }
 
     public string Name { get; private set; } = string.Empty;
-
-    public string StreetAddress1 { get; private set; } = string.Empty;
-
-    public string? StreetAddress2 { get; private set; }
-
+    public string StreetAddress { get; private set; } = string.Empty;
     public string City { get; private set; } = string.Empty;
-
     public string ZipCode { get; private set; } = string.Empty;
-
     public StateId StateId { get; private set; } = 0;
+    public string Phone { get; private set; } = string.Empty;
 
-    public string? CellPhone { get; private set; }
-
-    public string? HomePhone { get; private set; }
-
-    public string? WorkPhone { get; private set; }
+    public static Customer Create(
+        string name,
+        string streetAddress,
+        string city,
+        string zip,
+        StateId stateId,
+        string phone
+        )
+    {
+        return new Customer(name, streetAddress, city, zip, stateId, phone);
+    }
 }

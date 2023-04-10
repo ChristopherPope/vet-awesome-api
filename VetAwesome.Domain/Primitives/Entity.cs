@@ -3,7 +3,7 @@
 namespace VetAwesome.Domain.Primitives;
 
 public abstract class Entity<T> : IEquatable<Entity<T>>
-    where T : BaseEntityId
+    where T : EntityId
 {
     protected Entity(T id) => Id = id;
 
@@ -41,7 +41,7 @@ public abstract class Entity<T> : IEquatable<Entity<T>>
 
     public override int GetHashCode()
     {
-        return Id.GetHashCode() * 491;
+        return Id == null ? 0 : Id.GetHashCode() * 491;
     }
 
     public bool Equals(Entity<T>? other)

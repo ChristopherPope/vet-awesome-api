@@ -1,4 +1,4 @@
-﻿namespace VetAwesome.Domain.Abstractions;
+﻿namespace VetAwesome.Domain.Repositories;
 
 public interface IUnitOfWork
 {

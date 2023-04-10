@@ -1,6 +1,6 @@
 ﻿namespace VetAwesome.Domain.Entities.EntityIds;
 
-public record StateId : BaseEntityId
+public record StateId : EntityId
 {
     public StateId(int id)
         : base(id)

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace VetAwesome.Persistence.Migrations
+namespace VetAwesome.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class initdb : Migration
@@ -14,7 +14,8 @@ namespace VetAwesome.Persistence.Migrations
                 name: "PetType",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -26,7 +27,8 @@ namespace VetAwesome.Persistence.Migrations
                 name: "State",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
                 },
                 constraints: table =>
@@ -38,7 +40,8 @@ namespace VetAwesome.Persistence.Migrations
                 name: "PetBreed",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PetTypeId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -57,16 +60,14 @@ namespace VetAwesome.Persistence.Migrations
                 name: "Customer",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    StreetAddress1 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    StreetAddress2 = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    StreetAddress = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     City = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     StateId = table.Column<int>(type: "int", nullable: false),
-                    CellPhone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    HomePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WorkPhone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true)
+                    Phone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,7 +84,8 @@ namespace VetAwesome.Persistence.Migrations
                 name: "Pet",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     BreedId = table.Column<int>(type: "int", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false)

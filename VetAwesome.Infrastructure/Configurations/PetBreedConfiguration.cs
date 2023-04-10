@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VetAwesome.Domain.Entities;
 using VetAwesome.Domain.Entities.EntityIds;
 
-namespace VetAwesome.Persistence.Configurations;
+namespace VetAwesome.Infrastructure.Configurations;
 
 public class PetBreedConfiguration : IEntityTypeConfiguration<PetBreed>
 {
@@ -11,9 +11,11 @@ public class PetBreedConfiguration : IEntityTypeConfiguration<PetBreed>
     {
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.Id).HasConversion(
-            petBreedId => petBreedId.Value,
-            value => new PetBreedId(value));
+        builder.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .HasConversion(
+                id => id.Value,
+                value => new PetBreedId(value));
 
         builder.Property(e => e.Name).HasMaxLength(100);
 

@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using VetAwesome.Persistence;
+using VetAwesome.Infrastructure;
 
 #nullable disable
 
-namespace VetAwesome.Persistence.Migrations
+namespace VetAwesome.Infrastructure.Migrations
 {
     [DbContext(typeof(VetAwesomeDbContext))]
-    [Migration("20230409130254_initdb")]
+    [Migration("20230410191320_initdb")]
     partial class initdb
     {
         /// <inheritdoc />
@@ -27,40 +27,33 @@ namespace VetAwesome.Persistence.Migrations
             modelBuilder.Entity("VetAwesome.Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("CellPhone")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("HomePhone")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<int>("StateId")
                         .HasColumnType("int");
 
-                    b.Property<string>("StreetAddress1")
+                    b.Property<string>("StreetAddress")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("StreetAddress2")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("WorkPhone")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ZipCode")
                         .IsRequired()
@@ -77,7 +70,10 @@ namespace VetAwesome.Persistence.Migrations
             modelBuilder.Entity("VetAwesome.Domain.Entities.Pet", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BreedId")
                         .HasColumnType("int");
@@ -102,7 +98,10 @@ namespace VetAwesome.Persistence.Migrations
             modelBuilder.Entity("VetAwesome.Domain.Entities.PetBreed", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -122,7 +121,10 @@ namespace VetAwesome.Persistence.Migrations
             modelBuilder.Entity("VetAwesome.Domain.Entities.PetType", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -137,7 +139,10 @@ namespace VetAwesome.Persistence.Migrations
             modelBuilder.Entity("VetAwesome.Domain.Entities.State", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
