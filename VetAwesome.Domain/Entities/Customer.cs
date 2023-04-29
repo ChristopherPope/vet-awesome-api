@@ -1,19 +1,10 @@
-﻿using VetAwesome.Domain.Entities.EntityIds;
-using VetAwesome.Domain.Primitives;
+﻿namespace VetAwesome.Domain.Entities;
 
-namespace VetAwesome.Domain.Entities;
-
-public sealed class Customer : Entity<CustomerId>
+public sealed class Customer : Entity
 {
-    private Customer(
-        string name,
-        string streetAddress,
-        string city,
-        string zip,
-        StateId stateId,
-        string phone
-        )
-        : base(0)
+    private readonly List<Pet> pets = new();
+
+    private Customer(string name, string streetAddress, string city, string zip, int stateId, string phone)
     {
         Name = name;
         StreetAddress = streetAddress;
@@ -24,26 +15,21 @@ public sealed class Customer : Entity<CustomerId>
     }
 
     private Customer()
-        : base(0)
     {
     }
 
-    public string Name { get; private set; } = string.Empty;
-    public string StreetAddress { get; private set; } = string.Empty;
-    public string City { get; private set; } = string.Empty;
-    public string ZipCode { get; private set; } = string.Empty;
-    public StateId StateId { get; private set; } = 0;
-    public string Phone { get; private set; } = string.Empty;
+    public string Name { get; private set; } = null!;
+    public string StreetAddress { get; private set; } = null!;
+    public string City { get; private set; } = null!;
+    public string ZipCode { get; private set; } = null!;
+    public int StateId { get; private set; }
+    public string Phone { get; private set; } = null!;
 
-    public static Customer Create(
-        string name,
-        string streetAddress,
-        string city,
-        string zip,
-        StateId stateId,
-        string phone
-        )
+    public State State { get; private set; } = null!;
+    public IReadOnlyCollection<Pet> Pets => pets;
+
+    public static Customer Create(string name, string streetAddress, string city, string zip, int stateId, string phone)
     {
-        return new Customer(name, streetAddress, city, zip, stateId, phone);
+        return new(name, streetAddress, city, zip, stateId, phone);
     }
 }

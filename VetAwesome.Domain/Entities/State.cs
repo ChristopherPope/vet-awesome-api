@@ -1,14 +1,15 @@
-﻿using VetAwesome.Domain.Entities.EntityIds;
-using VetAwesome.Domain.Primitives;
+﻿namespace VetAwesome.Domain.Entities;
 
-namespace VetAwesome.Domain.Entities;
-
-public sealed class State : Entity<StateId>
+public sealed class State : Entity
 {
-    public State()
-        : base(0)
+    internal State(int id)
+        : base(id)
     {
+        Customers = new HashSet<Customer>();
     }
 
-    public string Name { get; private set; } = string.Empty;
+    public string Abbreviation { get; set; } = null!;
+    public string Name { get; set; } = null!;
+
+    public ICollection<Customer> Customers { get; set; }
 }

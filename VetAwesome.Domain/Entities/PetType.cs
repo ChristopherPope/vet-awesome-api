@@ -1,14 +1,14 @@
-﻿using VetAwesome.Domain.Entities.EntityIds;
-using VetAwesome.Domain.Primitives;
+﻿namespace VetAwesome.Domain.Entities;
 
-namespace VetAwesome.Domain.Entities;
-
-public sealed class PetType : Entity<PetTypeId>
+public sealed class PetType : Entity
 {
-    public PetType()
-        : base(0)
+    internal PetType(int id)
+        : base(id)
     {
+        PetBreeds = new HashSet<PetBreed>();
     }
 
-    public string Name { get; private set; } = string.Empty;
+    public string Name { get; set; } = null!;
+
+    public ICollection<PetBreed> PetBreeds { get; set; }
 }
