@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VetAwesome.Domain.Entities;
+using VetAwesome.Infrastructure.Constants;
 
 #nullable disable
 
-namespace VetAwesome.Persistence.Configurations;
+namespace VetAwesome.Infrastructure.Configurations;
 
 public partial class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {
     public void Configure(EntityTypeBuilder<Appointment> entity)
     {
+        entity.ToTable(TableNames.Appointments);
         entity.Property(e => e.EndTime).HasColumnType("datetime");
 
         entity.Property(e => e.StartTime).HasColumnType("datetime");

@@ -2,14 +2,25 @@
 
 public sealed class State : Entity
 {
-    internal State(int id)
-        : base(id)
+    private readonly List<Customer> customers = new();
+
+    public string Abbreviation { get; private set; } = null!;
+    public string Name { get; private set; } = null!;
+
+    public IReadOnlyCollection<Customer> Customers => customers;
+
+    private State()
     {
-        Customers = new HashSet<Customer>();
     }
 
-    public string Abbreviation { get; set; } = null!;
-    public string Name { get; set; } = null!;
+    private State(string abbreviation, string name)
+    {
+        Abbreviation = abbreviation;
+        Name = name;
+    }
 
-    public ICollection<Customer> Customers { get; set; }
+    static public State Create(string abbreviation, string name)
+    {
+        return new State(abbreviation, name);
+    }
 }

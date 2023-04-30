@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\VetAwesome.Application\VetAwesome.Application.csproj" />
     <ProjectReference Include="..\VetAwesome.Infrastructure\VetAwesome.Infrastructure.csproj" />
-    <ProjectReference Include="..\VetAwesome.Persistence\VetAwesome.Persistence.csproj" />
+    <ProjectReference Include="..\VetAwesome.Infrastructure\VetAwesome.Infrastructure.csproj" />
     <ProjectReference Include="..\VetAwesome.Presentation\VetAwesome.Presentation.csproj" />
   </ItemGroup>
 

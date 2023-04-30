@@ -1,6 +1,6 @@
 ﻿using VetAwesome.Domain.Repositories;
 
-namespace VetAwesome.Persistence;
+namespace VetAwesome.Infrastructure;
 
 internal sealed class UnitOfWork : IUnitOfWork
 {

@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VetAwesome.Domain.Entities;
+using VetAwesome.Infrastructure.Constants;
 
 #nullable disable
 
-namespace VetAwesome.Persistence.Configurations;
+namespace VetAwesome.Infrastructure.Configurations;
 
 public partial class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> entity)
     {
+        entity.ToTable(TableNames.Users);
         entity.Property(e => e.Name)
             .HasMaxLength(50)
             .IsUnicode(false);

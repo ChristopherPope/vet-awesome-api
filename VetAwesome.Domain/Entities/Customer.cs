@@ -4,6 +4,8 @@ public sealed class Customer : Entity
 {
     private readonly List<Pet> pets = new();
 
+    public IReadOnlyCollection<Pet> Pets => pets;
+
     private Customer(string name, string streetAddress, string city, string zip, int stateId, string phone)
     {
         Name = name;
@@ -26,10 +28,17 @@ public sealed class Customer : Entity
     public string Phone { get; private set; } = null!;
 
     public State State { get; private set; } = null!;
-    public IReadOnlyCollection<Pet> Pets => pets;
 
     public static Customer Create(string name, string streetAddress, string city, string zip, int stateId, string phone)
     {
         return new(name, streetAddress, city, zip, stateId, phone);
+    }
+
+    public Pet AddPet(string petName, PetBreed breed)
+    {
+        var pet = Pet.Create(petName, breed, this);
+        pets.Add(pet);
+
+        return pet;
     }
 }

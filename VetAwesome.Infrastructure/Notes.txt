@@ -1,3 +1,0 @@
-﻿add-migration initdb
-
-update-database -Connection "Data Source=localhost;Initial Catalog=VET-AWESOME-DEV;Integrated Security=True;Encrypt=false;"

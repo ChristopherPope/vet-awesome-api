@@ -6,7 +6,7 @@ using VetAwesome.Presentation.Contracts.Customers;
 
 namespace VetAwesome.Presentation.Controllers;
 
-[Route("api/{Controller}")]
+[Route("api/[Controller]")]
 public sealed class CustomersController : ApiController
 {
     public CustomersController(ISender sender)
@@ -26,7 +26,6 @@ public sealed class CustomersController : ApiController
             request.Zip,
             request.StateId,
             request.Phone);
-
 
         Result<int> result = await Sender.Send(command, cancellationToken);
 

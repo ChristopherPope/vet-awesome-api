@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Scrutor;
-using VetAwesome.Persistence;
+using VetAwesome.Infrastructure;
 
 namespace VetAwesome.Api.Configuration;
 
@@ -13,8 +13,7 @@ public static class DependencyInjection
             .Scan(
                 selector => selector
                     .FromAssemblies(
-                        VetAwesome.Infrastructure.AssemblyReference.Assembly,
-                        VetAwesome.Persistence.AssemblyReference.Assembly)
+                        VetAwesome.Infrastructure.AssemblyReference.Assembly)
                     .AddClasses(false)
                     .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                     .AsMatchingInterface()

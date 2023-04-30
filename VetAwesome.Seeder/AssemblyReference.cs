@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace VetAwesome.Infrastructure;
+namespace VetAwesome.Seeder;
 
 public static class AssemblyReference
 {

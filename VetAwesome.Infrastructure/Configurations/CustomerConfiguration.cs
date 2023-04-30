@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VetAwesome.Domain.Entities;
+using VetAwesome.Infrastructure.Constants;
 
 #nullable disable
 
-namespace VetAwesome.Persistence.Configurations;
+namespace VetAwesome.Infrastructure.Configurations;
 
 public partial class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> entity)
     {
+        entity.ToTable(TableNames.Customers);
         entity.Property(e => e.Phone)
             .HasMaxLength(15)
             .IsUnicode(false);

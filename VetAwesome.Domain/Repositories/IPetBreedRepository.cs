@@ -1,7 +1,7 @@
 ﻿using VetAwesome.Domain.Entities;
 
 namespace VetAwesome.Domain.Repositories;
-internal interface IPetRepostiory
+
+public interface IPetBreedRepository : IRepository<PetBreed>
 {
-    void Create(Pet pet);
 }

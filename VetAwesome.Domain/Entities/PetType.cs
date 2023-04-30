@@ -2,13 +2,32 @@
 
 public sealed class PetType : Entity
 {
-    internal PetType(int id)
-        : base(id)
+    private readonly List<PetBreed> petBreeds = new();
+
+    public IReadOnlyCollection<PetBreed> PetBreeds => petBreeds;
+
+    private PetType()
     {
-        PetBreeds = new HashSet<PetBreed>();
     }
 
-    public string Name { get; set; } = null!;
+    private PetType(int id, string name)
+        : base(id)
+    {
+        Name = name;
+    }
 
-    public ICollection<PetBreed> PetBreeds { get; set; }
+    static public PetType Create(string name)
+    {
+        return new PetType(0, name);
+    }
+
+    public PetBreed AddBreed(string breedName)
+    {
+        var breed = PetBreed.Create(breedName, this);
+        petBreeds.Add(breed);
+
+        return breed;
+    }
+
+    public string Name { get; private set; } = null!;
 }

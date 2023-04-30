@@ -2,6 +2,6 @@
 
 namespace VetAwesome.Domain.Repositories;
 
-public interface ICustomerRepository : IRepository<Customer>
+public interface IPetRepository : IRepository<Pet>
 {
 }

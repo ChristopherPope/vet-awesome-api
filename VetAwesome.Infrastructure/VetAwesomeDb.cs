@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace VetAwesome.Persistence;
+namespace VetAwesome.Infrastructure;
 
 public sealed class VetAwesomeDb : DbContext
 {

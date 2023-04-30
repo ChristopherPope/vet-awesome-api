@@ -19,7 +19,7 @@ internal sealed class CreateCustomerCommandHandler : ICommandHandler<CreateCusto
     public async Task<Result<int>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = Customer.Create(request.Name, request.StreetAddress, request.City, request.Zip, request.StateId, request.Phone);
-        customerRepo.Create(customer);
+        await customerRepo.CreateAsync(customer, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return customer.Id;
