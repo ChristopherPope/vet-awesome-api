@@ -9,9 +9,9 @@ using VetAwesome.Infrastructure;
 using VetAwesome.Seeder;
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
+    .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-    .Enrich.FromLogContext()
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning)
     .WriteTo.Console()
     .CreateLogger();
 
