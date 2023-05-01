@@ -9,8 +9,6 @@ namespace VetAwesome.Seeder.EntitySeeders;
 internal sealed class PetBreedSeeder : EntitySeeder<PetBreed>, IPetBreedSeeder
 {
     private readonly ILogger<PetBreedSeeder> logger;
-    private readonly IUnitOfWork unitOfWork;
-    private readonly IPetBreedRepository breedRepo;
     private readonly IPetTypeSeeder petTypeSeeder;
 
     #region Breed Names
@@ -295,10 +293,9 @@ internal sealed class PetBreedSeeder : EntitySeeder<PetBreed>, IPetBreedSeeder
     public IReadOnlyCollection<PetBreed> Breeds => Entities;
 
     public PetBreedSeeder(ILogger<PetBreedSeeder> logger, IUnitOfWork unitOfWork, IPetBreedRepository petBreedRepo, IPetTypeSeeder petTypeSeeder)
+        : base(unitOfWork, petBreedRepo, logger)
     {
         this.logger = logger;
-        this.unitOfWork = unitOfWork;
-        this.breedRepo = petBreedRepo;
         this.petTypeSeeder = petTypeSeeder;
     }
 
@@ -307,46 +304,24 @@ internal sealed class PetBreedSeeder : EntitySeeder<PetBreed>, IPetBreedSeeder
         Guard.IsNull(entities);
         entities = new List<PetBreed>();
 
-        var catType = petTypeSeeder.PetTypes.First(e => e.Name == "Cat");
-        Guard.IsNotNull(catType);
-        await CreateBreeds(catBreedNames, catType, cancellationToken);
+        CreateBreeds(catBreedNames, "Cat");
+        CreateBreeds(dogBreedNames, "Dog");
 
-        var dogType = petTypeSeeder.PetTypes.First(e => e.Name == "Dog");
-        Guard.IsNotNull(dogType);
-        await CreateBreeds(dogBreedNames, dogType, cancellationToken);
+        await CreateAllEntitiesAsync(cancellationToken);
     }
 
-    private async Task CreateBreeds(List<string> breedNames, PetType petType, CancellationToken cancellationToken)
+    private void CreateBreeds(List<string> breedNames, string petTypeName)
     {
-        var breeds = new List<PetBreed>();
+        var petType = petTypeSeeder.PetTypes.First(e => e.Name == petTypeName);
         foreach (var breedName in breedNames)
         {
             var breed = petType.AddBreed(breedName);
             entities!.Add(breed);
-
-            breeds.Add(breed);
         }
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return;
-        }
-        await breedRepo.CreateRangeAsync(breeds, cancellationToken);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return;
-        }
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-
-        logger.LogInformation($"Created {breeds.Count:N0} {petType.Name} breeds.");
     }
 
     public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
-        await breedRepo.DeleteAllAsync(cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Deleted all breeds.");
-        entities = null;
+        await DeleteAllEntitiesAsync(cancellationToken);
     }
 }

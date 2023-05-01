@@ -17,7 +17,7 @@ public partial class PetBreedConfiguration : IEntityTypeConfiguration<PetBreed>
             .IsUnicode(false);
 
         entity.HasOne(d => d.PetType)
-            .WithMany(p => p.PetBreeds)
+            .WithMany(p => p.Breeds)
             .HasForeignKey(d => d.PetTypeId)
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("FK_PetBreeds_PetTypes");

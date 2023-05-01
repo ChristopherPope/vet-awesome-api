@@ -2,15 +2,26 @@
 
 public sealed class User : Entity
 {
-    internal User(int id)
-        : base(id)
+    private List<Appointment> appointments = new();
+
+    public IReadOnlyCollection<Appointment> Appointments => appointments;
+    public string Name { get; private set; } = null!;
+    public int UserRoleId { get; private set; }
+    public Role UserRole { get; private set; } = null!;
+
+    private User()
     {
-        Appointments = new HashSet<Appointment>();
     }
 
-    public string Name { get; set; } = null!;
-    public int UserRoleId { get; set; }
+    private User(string name, Role role)
+    {
+        Name = name;
+        UserRoleId = role.Id;
+        UserRole = role;
+    }
 
-    public Role UserRole { get; set; } = null!;
-    public ICollection<Appointment> Appointments { get; set; }
+    static public User Create(string name, Role role)
+    {
+        return new User(name, role);
+    }
 }

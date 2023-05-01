@@ -28,4 +28,12 @@ public sealed class Pet : Entity
     {
         return new Pet(name, breed, owner);
     }
+
+    public Appointment AddAppointment(DateTime startTime, DateTime endTime, User vet)
+    {
+        var appointment = Appointment.Create(startTime, endTime, this, vet);
+        appointments.Add(appointment);
+
+        return appointment;
+    }
 }

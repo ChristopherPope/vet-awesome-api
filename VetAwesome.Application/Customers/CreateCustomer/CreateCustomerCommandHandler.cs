@@ -1,5 +1,4 @@
 ﻿using VetAwesome.Application.Abstractions.Messaging;
-using VetAwesome.Domain.Entities;
 using VetAwesome.Domain.Repositories;
 using VetAwesome.Domain.Results;
 
@@ -18,10 +17,12 @@ internal sealed class CreateCustomerCommandHandler : ICommandHandler<CreateCusto
 
     public async Task<Result<int>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customer = Customer.Create(request.Name, request.StreetAddress, request.City, request.Zip, request.StateId, request.Phone);
-        await customerRepo.CreateAsync(customer, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        //var customer = Customer.Create(request.Name, request.StreetAddress, request.City, request.Zip, request.StateId, request.Phone);
+        //await customerRepo.CreateAsync(customer, cancellationToken);
+        //await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return customer.Id;
+        //return customer.Id;
+
+        return null;
     }
 }

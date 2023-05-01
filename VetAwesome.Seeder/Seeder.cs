@@ -11,6 +11,9 @@ internal class Seeder : IHostedService, IAsyncDisposable
     private readonly IPetBreedSeeder breedSeeder;
     private readonly IPetSeeder petSeeder;
     private readonly ICustomerSeeder customerSeeder;
+    private readonly IRoleSeeder roleSeeder;
+    private readonly IUserSeeder userSeeder;
+    private readonly IAppointmentSeeder appointmentSeeder;
     private readonly ILogger<Seeder> logger;
     private readonly Task completedTask = Task.CompletedTask;
     private Task? task;
@@ -20,7 +23,11 @@ internal class Seeder : IHostedService, IAsyncDisposable
         , IPetTypeSeeder petTypeSeeder
         , IPetSeeder petSeeder
         , IPetBreedSeeder breedSeeder
-        , ICustomerSeeder customerSeeder)
+        , ICustomerSeeder customerSeeder
+        , IRoleSeeder roleSeeder
+        , IUserSeeder userSeeder
+        , IAppointmentSeeder appointmentSeeder
+        )
     {
         this.logger = logger;
         this.stateSeeder = stateSeeder;
@@ -28,6 +35,9 @@ internal class Seeder : IHostedService, IAsyncDisposable
         this.breedSeeder = breedSeeder;
         this.petSeeder = petSeeder;
         this.customerSeeder = customerSeeder;
+        this.roleSeeder = roleSeeder;
+        this.userSeeder = userSeeder;
+        this.appointmentSeeder = appointmentSeeder;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -52,6 +62,8 @@ internal class Seeder : IHostedService, IAsyncDisposable
         var cancellationToken = (CancellationToken)token;
         await DeleteEntitiesAsync(cancellationToken);
         await CreateEntitiesAsync(cancellationToken);
+
+        logger.LogInformation("Seeding of entities is completed.");
     }
 
     public Task StopAsync(CancellationToken stoppingToken)
@@ -71,8 +83,11 @@ internal class Seeder : IHostedService, IAsyncDisposable
     {
         var deletionSeeders = new List<IEntitySeeder>()
         {
+            appointmentSeeder,
             petSeeder,
             customerSeeder,
+            userSeeder,
+            roleSeeder,
             breedSeeder,
             petTypeSeeder,
             stateSeeder,
@@ -93,11 +108,14 @@ internal class Seeder : IHostedService, IAsyncDisposable
     {
         var creationSeeders = new List<IEntitySeeder>()
         {
+            roleSeeder,
+            userSeeder,
             petTypeSeeder,
             breedSeeder,
             stateSeeder,
             customerSeeder,
             petSeeder,
+            appointmentSeeder,
         };
 
         foreach (var seeder in creationSeeders)

@@ -1,19 +1,20 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
 using VetAwesome.Domain.Entities;
+using VetAwesome.Domain.Enums;
 using VetAwesome.Domain.Repositories;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
 
-internal class PetTypeSeeder : EntitySeeder<PetType>, IPetTypeSeeder
+internal sealed class RoleSeeder : EntitySeeder<Role>, IRoleSeeder
 {
-    private readonly ILogger<PetTypeSeeder> logger;
+    private readonly ILogger<RoleSeeder> logger;
 
-    public IReadOnlyCollection<PetType> PetTypes => Entities;
+    public IReadOnlyCollection<Role> Roles => Entities;
 
-    public PetTypeSeeder(ILogger<PetTypeSeeder> logger, IUnitOfWork unitOfWork, IPetTypeRepository petTypeRepo)
-        : base(unitOfWork, petTypeRepo, logger)
+    public RoleSeeder(IRoleRepository roleRepo, IUnitOfWork unitOfWork, ILogger<RoleSeeder> logger)
+        : base(unitOfWork, roleRepo, logger)
     {
         this.logger = logger;
     }
@@ -21,11 +22,14 @@ internal class PetTypeSeeder : EntitySeeder<PetType>, IPetTypeSeeder
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
         Guard.IsNull(entities);
-        entities = new List<PetType>()
+        entities = new();
+
+        var roleTypes = Enum.GetValues<RoleTypes>();
+        foreach (var roleType in roleTypes)
         {
-            PetType.Create("Cat"),
-            PetType.Create("Dog")
-        };
+            var role = Role.Create((int)roleType, roleType.ToString());
+            entities.Add(role);
+        }
 
         await CreateAllEntitiesAsync(cancellationToken);
     }

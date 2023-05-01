@@ -2,13 +2,24 @@
 
 public sealed class Role : Entity
 {
-    internal Role(int id)
-        : base(id)
+    private readonly List<User> users = new();
+
+    public string Name { get; private set; } = null!;
+    public IReadOnlyCollection<User> Users => users;
+
+    private Role()
     {
-        Users = new HashSet<User>();
     }
 
-    public string Name { get; set; } = null!;
+    public Role(int id, string name)
+        : base(id)
+    {
+        Name = name;
+    }
 
-    public ICollection<User> Users { get; set; }
+    static public Role Create(int id, string name)
+    {
+        return new Role(id, name);
+    }
+
 }

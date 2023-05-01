@@ -10,19 +10,15 @@ namespace VetAwesome.Seeder.EntitySeeders;
 
 internal sealed class CustomerSeeder : EntitySeeder<Customer>, ICustomerSeeder
 {
-    private readonly ILogger<PetBreedSeeder> logger;
-    private readonly IUnitOfWork unitOfWork;
-    private readonly ICustomerRepository customerRepo;
+    private readonly ILogger<CustomerSeeder> logger;
     private readonly IStateSeeder stateSeeder;
-    private readonly Random rand = new Random();
 
     public IReadOnlyCollection<Customer> Customers => Entities;
 
-    public CustomerSeeder(ILogger<PetBreedSeeder> logger, IUnitOfWork unitOfWork, ICustomerRepository customerRepo, IStateSeeder stateSeeder)
+    public CustomerSeeder(ILogger<CustomerSeeder> logger, IUnitOfWork unitOfWork, ICustomerRepository customerRepo, IStateSeeder stateSeeder)
+        : base(unitOfWork, customerRepo, logger)
     {
         this.logger = logger;
-        this.unitOfWork = unitOfWork;
-        this.customerRepo = customerRepo;
         this.stateSeeder = stateSeeder;
     }
 
@@ -40,32 +36,18 @@ internal sealed class CustomerSeeder : EntitySeeder<Customer>, ICustomerSeeder
                 faker.Address.StreetAddress(),
                 faker.Address.City(),
                 faker.Address.ZipCode(),
-                faker.PickRandom<State>(stateSeeder.States).Id,
+                faker.PickRandom<State>(stateSeeder.States),
                 faker.Phone.PhoneNumber("(###) ###-####")
                 );
 
             entities.Add(customer);
         }
 
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return;
-        }
-        await customerRepo.CreateRangeAsync(entities, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return;
-        }
-        logger.LogInformation($"Created {entities.Count:N0} customers.");
+        await CreateAllEntitiesAsync(cancellationToken);
     }
 
     public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
-        await customerRepo.DeleteAllAsync(cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Deleted all customers.");
-        entities = null;
+        await DeleteAllEntitiesAsync(cancellationToken);
     }
 }

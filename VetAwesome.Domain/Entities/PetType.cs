@@ -2,9 +2,9 @@
 
 public sealed class PetType : Entity
 {
-    private readonly List<PetBreed> petBreeds = new();
+    private readonly List<PetBreed> breeds = new();
 
-    public IReadOnlyCollection<PetBreed> PetBreeds => petBreeds;
+    public IReadOnlyCollection<PetBreed> Breeds => breeds;
 
     private PetType()
     {
@@ -24,7 +24,7 @@ public sealed class PetType : Entity
     public PetBreed AddBreed(string breedName)
     {
         var breed = PetBreed.Create(breedName, this);
-        petBreeds.Add(breed);
+        breeds.Add(breed);
 
         return breed;
     }

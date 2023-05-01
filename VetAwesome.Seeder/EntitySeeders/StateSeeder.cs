@@ -9,8 +9,6 @@ namespace VetAwesome.Seeder.EntitySeeders;
 internal sealed class StateSeeder : EntitySeeder<State>, IStateSeeder
 {
     private readonly ILogger<StateSeeder> logger;
-    private readonly IUnitOfWork unitOfWork;
-    private readonly IStateRepository stateRepo;
     #region State Names
     private readonly List<(string Name, string Abbreviation)> stateNames = new()
     {
@@ -70,10 +68,9 @@ internal sealed class StateSeeder : EntitySeeder<State>, IStateSeeder
     public IReadOnlyCollection<State> States => Entities;
 
     public StateSeeder(ILogger<StateSeeder> logger, IUnitOfWork unitOfWork, IStateRepository stateRepo)
+        : base(unitOfWork, stateRepo, logger)
     {
         this.logger = logger;
-        this.unitOfWork = unitOfWork;
-        this.stateRepo = stateRepo;
     }
 
     public async Task CreateAsync(CancellationToken cancellationToken)
@@ -87,26 +84,11 @@ internal sealed class StateSeeder : EntitySeeder<State>, IStateSeeder
             entities.Add(state);
         }
 
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return;
-        }
-        await stateRepo.CreateRangeAsync(entities, cancellationToken);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            return;
-        }
-        await unitOfWork.SaveChangesAsync();
-
-        logger.LogInformation($"Created {entities.Count:N0} states.");
+        await CreateAllEntitiesAsync(cancellationToken);
     }
 
     public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
-        await stateRepo.DeleteAllAsync(cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Deleted all states.");
-        entities = null;
+        await DeleteAllEntitiesAsync(cancellationToken);
     }
 }
