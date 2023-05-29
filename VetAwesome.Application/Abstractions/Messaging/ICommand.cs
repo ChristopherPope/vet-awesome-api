@@ -3,10 +3,10 @@ using VetAwesome.Domain.Results;
 
 namespace VetAwesome.Application.Abstractions.Messaging;
 
-public interface ICommand : IRequest<Result>
+public interface ICommand : MediatR.IRequest<Result>
 {
 }
 
-public interface ICommand<TResponse> : IRequest<Result<TResponse>>
+public interface IRequest<TResponse> : MediatR.IRequest<Result<TResponse>>
 {
 }

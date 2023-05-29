@@ -2,7 +2,7 @@
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
 using VetAwesome.Domain.Entities;
-using VetAwesome.Domain.Repositories;
+using VetAwesome.Infrastructure.Persistence;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 using static Bogus.DataSets.Name;
 
@@ -13,10 +13,12 @@ internal sealed class CustomerSeeder : EntitySeeder<Customer>, ICustomerSeeder
     private readonly ILogger<CustomerSeeder> logger;
     private readonly IStateSeeder stateSeeder;
 
-    public IReadOnlyCollection<Customer> Customers => Entities;
+    public IReadOnlyCollection<Customer> Customers => EntityList;
 
-    public CustomerSeeder(ILogger<CustomerSeeder> logger, IUnitOfWork unitOfWork, ICustomerRepository customerRepo, IStateSeeder stateSeeder)
-        : base(unitOfWork, customerRepo, logger)
+    public CustomerSeeder(ILogger<CustomerSeeder> logger
+        , VetAwesomeDb vetDb
+        , IStateSeeder stateSeeder)
+        : base(logger, vetDb)
     {
         this.logger = logger;
         this.stateSeeder = stateSeeder;
@@ -24,11 +26,11 @@ internal sealed class CustomerSeeder : EntitySeeder<Customer>, ICustomerSeeder
 
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
-        Guard.IsNull(entities);
-        entities = new List<Customer>();
+        Guard.IsNull(entityList);
+        entityList = new List<Customer>();
         var customerCount = rand.Next(10, 51);
         var faker = new Faker();
-        while (entities.Count < customerCount)
+        while (entityList.Count < customerCount)
         {
             var gender = faker.PickRandom<Gender>();
             var customer = Customer.Create(
@@ -40,7 +42,7 @@ internal sealed class CustomerSeeder : EntitySeeder<Customer>, ICustomerSeeder
                 faker.Phone.PhoneNumber("(###) ###-####")
                 );
 
-            entities.Add(customer);
+            entityList.Add(customer);
         }
 
         await CreateAllEntitiesAsync(cancellationToken);

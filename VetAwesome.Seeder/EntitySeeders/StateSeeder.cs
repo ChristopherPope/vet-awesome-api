@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
 using VetAwesome.Domain.Entities;
-using VetAwesome.Domain.Repositories;
+using VetAwesome.Infrastructure.Persistence;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
@@ -65,23 +65,24 @@ internal sealed class StateSeeder : EntitySeeder<State>, IStateSeeder
     };
     #endregion
 
-    public IReadOnlyCollection<State> States => Entities;
+    public IReadOnlyCollection<State> States => EntityList;
 
-    public StateSeeder(ILogger<StateSeeder> logger, IUnitOfWork unitOfWork, IStateRepository stateRepo)
-        : base(unitOfWork, stateRepo, logger)
+    public StateSeeder(ILogger<StateSeeder> logger
+        , VetAwesomeDb vetDb)
+        : base(logger, vetDb)
     {
         this.logger = logger;
     }
 
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
-        Guard.IsNull(entities);
-        entities = new List<State>();
+        Guard.IsNull(entityList);
+        entityList = new List<State>();
 
         foreach (var stateName in stateNames)
         {
             var state = State.Create(stateName.Abbreviation, stateName.Name);
-            entities.Add(state);
+            entityList.Add(state);
         }
 
         await CreateAllEntitiesAsync(cancellationToken);

@@ -1,4 +1,5 @@
-﻿using VetAwesome.Application.Abstractions.Messaging;
+﻿
+using MediatR;
 
 namespace VetAwesome.Application.Customers.CreateCustomer;
 
@@ -8,4 +9,4 @@ public sealed record CreateCustomerCommand(
     string City,
     string Zip,
     int StateId,
-    string Phone) : ICommand<int>;
+    string Phone) : IRequest<int>;

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Scrutor;
-using VetAwesome.Infrastructure;
+using VetAwesome.Infrastructure.Persistence;
 
 namespace VetAwesome.Api.Configuration;
 

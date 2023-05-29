@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using VetAwesome.Domain.Entities;
 using VetAwesome.Domain.Enums;
-using VetAwesome.Domain.Repositories;
+using VetAwesome.Infrastructure.Persistence;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
@@ -13,20 +13,26 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
     private readonly IUserSeeder userSeeder;
     private readonly IPetSeeder petSeeder;
 
-    public IReadOnlyCollection<Appointment> Appointments => Entities;
+    public IReadOnlyCollection<Appointment> Appointments => EntityList;
 
-    public AppointmentSeeder(ILogger<AppointmentSeeder> logger, IUnitOfWork unitOfWork, IAppointmentRepository appointmentRepo, IUserSeeder userSeeder, IPetSeeder petSeeder)
-        : base(unitOfWork, appointmentRepo, logger)
+    public AppointmentSeeder(ILogger<AppointmentSeeder> logger
+        , VetAwesomeDb vetDb
+        , IUserSeeder userSeeder
+        , IPetSeeder petSeeder)
+        : base(logger, vetDb)
     {
-        this.logger = logger;
         this.userSeeder = userSeeder;
         this.petSeeder = petSeeder;
+        this.logger = logger;
     }
 
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
-        Guard.IsNull(entities);
-        entities = new();
+        await petSeeder.LoadAllPetsAsync(cancellationToken);
+        await userSeeder.LoadAllUsersAsync(cancellationToken);
+
+        Guard.IsNull(entityList);
+        entityList = new();
 
         var startTime = new TimeOnly(8, 0, 0);
         for (var i = 0; i < 32; i++)
@@ -60,7 +66,7 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
                 .AddMinutes(rand.Next(1, 5) * 15);
 
             var appointment = pet.AddAppointment(SetTimeToToday(startTime), SetTimeToToday(endTime), vet);
-            entities!.Add(appointment);
+            entityList!.Add(appointment);
         }
     }
 

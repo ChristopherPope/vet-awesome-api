@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
 using VetAwesome.Domain.Entities;
-using VetAwesome.Domain.Repositories;
+using VetAwesome.Infrastructure.Persistence;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
@@ -290,10 +290,12 @@ internal sealed class PetBreedSeeder : EntitySeeder<PetBreed>, IPetBreedSeeder
     #endregion
 
 
-    public IReadOnlyCollection<PetBreed> Breeds => Entities;
+    public IReadOnlyCollection<PetBreed> Breeds => EntityList;
 
-    public PetBreedSeeder(ILogger<PetBreedSeeder> logger, IUnitOfWork unitOfWork, IPetBreedRepository petBreedRepo, IPetTypeSeeder petTypeSeeder)
-        : base(unitOfWork, petBreedRepo, logger)
+    public PetBreedSeeder(ILogger<PetBreedSeeder> logger
+        , VetAwesomeDb vetDb
+        , IPetTypeSeeder petTypeSeeder)
+        : base(logger, vetDb)
     {
         this.logger = logger;
         this.petTypeSeeder = petTypeSeeder;
@@ -301,8 +303,8 @@ internal sealed class PetBreedSeeder : EntitySeeder<PetBreed>, IPetBreedSeeder
 
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
-        Guard.IsNull(entities);
-        entities = new List<PetBreed>();
+        Guard.IsNull(entityList);
+        entityList = new List<PetBreed>();
 
         CreateBreeds(catBreedNames, "Cat");
         CreateBreeds(dogBreedNames, "Dog");
@@ -316,7 +318,7 @@ internal sealed class PetBreedSeeder : EntitySeeder<PetBreed>, IPetBreedSeeder
         foreach (var breedName in breedNames)
         {
             var breed = petType.AddBreed(breedName);
-            entities!.Add(breed);
+            entityList!.Add(breed);
         }
     }
 

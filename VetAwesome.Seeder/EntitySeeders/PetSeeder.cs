@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VetAwesome.Domain.Entities;
-using VetAwesome.Domain.Repositories;
+using VetAwesome.Infrastructure.Persistence;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
@@ -68,20 +69,31 @@ internal sealed class PetSeeder : EntitySeeder<Pet>, IPetSeeder
     private readonly IPetBreedSeeder breedSeeder;
     private readonly ICustomerSeeder customerSeeder;
 
-    public IReadOnlyCollection<Pet> Pets => Entities;
+    public IReadOnlyCollection<Pet> Pets => EntityList;
 
-    public PetSeeder(IUnitOfWork unitOfWork, IPetRepository petRepo, ILogger<PetSeeder> logger, IPetBreedSeeder breedSeeder, ICustomerSeeder customerSeeder)
-        : base(unitOfWork, petRepo, logger)
+    public PetSeeder(ILogger<PetSeeder> logger
+        , VetAwesomeDb vetDb
+        , IPetBreedSeeder breedSeeder
+        , ICustomerSeeder customerSeeder)
+        : base(logger, vetDb)
     {
         this.logger = logger;
         this.breedSeeder = breedSeeder;
         this.customerSeeder = customerSeeder;
     }
 
+    public async Task LoadAllPetsAsync(CancellationToken cancellationToken)
+    {
+        entityList = await vetDb
+            .Set<Pet>()
+            .Include(p => p.Customer)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
-        Guard.IsNull(entities);
-        entities = new List<Pet>();
+        Guard.IsNull(entityList);
+        entityList = new List<Pet>();
 
         foreach (var customer in customerSeeder.Customers)
         {
@@ -92,7 +104,7 @@ internal sealed class PetSeeder : EntitySeeder<Pet>, IPetSeeder
                 var breed = GetRandomElement(breedSeeder.Breeds);
 
                 var pet = customer.AddPet(petName, breed);
-                entities.Add(pet);
+                entityList.Add(pet);
             }
         }
 

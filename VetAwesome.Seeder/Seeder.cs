@@ -59,11 +59,22 @@ internal class Seeder : IHostedService, IAsyncDisposable
             return;
         }
 
-        var cancellationToken = (CancellationToken)token;
-        await DeleteEntitiesAsync(cancellationToken);
-        await CreateEntitiesAsync(cancellationToken);
+        var option = string.Empty;
+        do
+        {
+            Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}1 - Create appointments only{Environment.NewLine}2 - Create all entities{Environment.NewLine}{Environment.NewLine}");
+            option = Console.ReadLine();
 
-        logger.LogInformation("Seeding of entities is completed.");
+        } while (option != "1" && option != "2");
+
+        if (option == "1")
+        {
+            await SeedAppointments((CancellationToken)token);
+        }
+        else
+        {
+            await SeedAllEntities((CancellationToken)token);
+        }
     }
 
     public Task StopAsync(CancellationToken stoppingToken)
@@ -77,6 +88,22 @@ internal class Seeder : IHostedService, IAsyncDisposable
     {
         task?.Dispose();
         return ValueTask.CompletedTask;
+    }
+
+    private async Task SeedAppointments(CancellationToken cancellationToken)
+    {
+        await appointmentSeeder.DeleteAllAsync(cancellationToken);
+        await appointmentSeeder.CreateAsync(cancellationToken);
+
+        logger.LogInformation("Seeding of appointments is completed.");
+    }
+
+    private async Task SeedAllEntities(CancellationToken cancellationToken)
+    {
+        await DeleteEntitiesAsync(cancellationToken);
+        await CreateEntitiesAsync(cancellationToken);
+
+        logger.LogInformation("Seeding of entities is completed.");
     }
 
     private async Task DeleteEntitiesAsync(CancellationToken cancellationToken)

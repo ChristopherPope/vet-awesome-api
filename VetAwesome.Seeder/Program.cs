@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Scrutor;
 using Serilog;
 using Serilog.Events;
-using VetAwesome.Infrastructure;
+using VetAwesome.Infrastructure.Persistence;
 using VetAwesome.Seeder;
 
 Log.Logger = new LoggerConfiguration()
@@ -49,7 +49,9 @@ try
 
             _ = services
                 .AddDbContext<VetAwesomeDb>(options => options.UseSqlServer(config.GetConnectionString("VetAwesome")))
-                .AddHostedService<Seeder>();
+                .AddHostedService<Seeder>()
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(VetAwesome.Application.AssemblyReference.Assembly));
+
         })
         .Build()
         .Run();

@@ -1,32 +1,35 @@
 ﻿using CommunityToolkit.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VetAwesome.Domain.Entities;
-using VetAwesome.Domain.Repositories;
+using VetAwesome.Infrastructure.Persistence;
 
 namespace VetAwesome.Seeder.EntitySeeders;
 
 internal abstract class EntitySeeder<T> where T : Entity
 {
-    protected List<T>? entities = null;
+    protected List<T>? entityList = null;
     protected readonly Random rand = new();
-    protected readonly IRepository<T> entityRepo;
-    protected readonly IUnitOfWork unitOfWork;
     private readonly ILogger logger;
+    protected readonly VetAwesomeDb vetDb;
+    protected readonly string tableName;
 
-    protected EntitySeeder(IUnitOfWork unit, IRepository<T> entityRepo, ILogger logger)
+    protected EntitySeeder(ILogger logger
+        , VetAwesomeDb vetDb)
     {
-        this.unitOfWork = unit;
-        this.entityRepo = entityRepo;
         this.logger = logger;
+        this.vetDb = vetDb;
+
+        tableName = vetDb.Model.FindEntityType(typeof(T))?.GetSchemaQualifiedTableName() ?? string.Empty;
     }
 
-    protected IReadOnlyCollection<T> Entities
+    protected IReadOnlyCollection<T> EntityList
     {
         get
         {
-            Guard.IsNotNull(entities);
+            Guard.IsNotNull(entityList);
 
-            return entities;
+            return entityList;
         }
     }
 
@@ -42,10 +45,10 @@ internal abstract class EntitySeeder<T> where T : Entity
             return;
         }
 
-        await entityRepo.DeleteAllAsync(cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation($"Deleted all {entityRepo.TableName}.");
-        entities = null;
+        await vetDb.Database.ExecuteSqlRawAsync($"delete from {tableName}", cancellationToken);
+        await vetDb.SaveChangesAsync(cancellationToken);
+        logger.LogInformation($"Deleted all in {tableName}.");
+        entityList = null;
     }
 
     protected async Task CreateAllEntitiesAsync(CancellationToken cancellationToken)
@@ -55,9 +58,10 @@ internal abstract class EntitySeeder<T> where T : Entity
             return;
         }
 
-        Guard.IsNotNull(entities);
-        await entityRepo.CreateRangeAsync(entities, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation($"Created {entities.Count:N0} {entityRepo.TableName}.");
+        Guard.IsNotNull(entityList);
+        var set = vetDb.Set<T>();
+        await set.AddRangeAsync(EntityList, cancellationToken);
+        await vetDb.SaveChangesAsync(cancellationToken);
+        logger.LogInformation($"Created {entityList.Count:N0} entities in {tableName}.");
     }
 }
