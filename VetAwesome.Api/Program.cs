@@ -3,6 +3,7 @@ using VetAwesome.Api.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration)
+    .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddApplication()
     .AddPresentation();
 

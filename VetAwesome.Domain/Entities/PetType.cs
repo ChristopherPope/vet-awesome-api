@@ -5,6 +5,7 @@ public sealed class PetType : Entity
     private readonly List<PetBreed> breeds = new();
 
     public IReadOnlyCollection<PetBreed> Breeds => breeds;
+    public string Name { get; private set; } = null!;
 
     private PetType()
     {
@@ -28,6 +29,4 @@ public sealed class PetType : Entity
 
         return breed;
     }
-
-    public string Name { get; private set; } = null!;
 }

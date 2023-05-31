@@ -8,9 +8,9 @@ namespace VetAwesome.Presentation.Controllers;
 [ApiController]
 public abstract class ApiController : ControllerBase
 {
-    protected readonly ISender Sender;
+    protected readonly ISender mediator;
 
-    protected ApiController(ISender sender) => Sender = sender;
+    protected ApiController(ISender mediator) => this.mediator = mediator;
 
     protected IActionResult HandleFailure(Result result) =>
     result switch
