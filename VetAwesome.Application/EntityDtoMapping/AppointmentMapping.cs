@@ -22,8 +22,7 @@ internal sealed class AppointmentMapping : Profile
         CreateMap<Pet, PetDto>();
         CreateMap<PetType, PetTypeDto>();
         CreateMap<PetBreed, PetBreedDto>();
-        CreateMap<Role, RoleDto>();
+        CreateMap<Role, UserRoleDto>();
         CreateMap<State, StateDto>();
-        CreateMap<User, UserDto>();
     }
 }

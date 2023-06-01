@@ -15,6 +15,7 @@ internal sealed class UserRepository : Repository<User>, IUserRepository
     public async Task<IEnumerable<User>> ReadAllAsync(CancellationToken cancellationToken)
     {
         return await (from u in Entities
+                      orderby u.Name
                       select u)
                 .ToListAsync(cancellationToken);
     }

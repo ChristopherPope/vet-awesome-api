@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace VetAwesome.Presentation.Controllers;
 
-[Route("api/[Controller]")]
+[Route("api/[controller]")]
+[ApiController]
 public sealed class CustomersController : ApiController
 {
     public CustomersController(ISender mediator)

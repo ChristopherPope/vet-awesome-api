@@ -5,6 +5,7 @@ using VetAwesome.Domain.Results;
 
 namespace VetAwesome.Presentation.Controllers;
 
+[Route("api/[controller]")]
 [ApiController]
 public abstract class ApiController : ControllerBase
 {
