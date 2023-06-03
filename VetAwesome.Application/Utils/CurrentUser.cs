@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using VetAwesome.Application.CommandsAndQueries.Users.Queries.GetUser;
 using VetAwesome.Application.Dtos;
+using VetAwesome.Application.Utils.Interfaces;
 
-namespace VetAwesome.Application.CurrentUser;
+namespace VetAwesome.Application.Utils;
 
 internal class CurrentUser : ICurrentUser
 {

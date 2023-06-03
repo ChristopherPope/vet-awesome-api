@@ -1,4 +1,5 @@
 using VetAwesome.Api.Configuration;
+using VetAwesome.Application.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,6 @@ builder.Services
         });
     })
     .AddInfrastructure(builder.Configuration)
-    .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies())
     .AddApplication()
     .AddPresentation();
 
@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseSession();
 app.MapControllers();
 app.UseCors();
 app.Run();

@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Scrutor;
 using VetAwesome.Infrastructure.Persistence;
 
@@ -29,16 +28,12 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddApplication(this IServiceCollection services)
-    {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(VetAwesome.Application.AssemblyReference.Assembly));
-
-        return services;
-    }
-
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         services
+            .AddDistributedMemoryCache()
+            .AddSession()
+            .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
             .AddControllers()
             .AddApplicationPart(VetAwesome.Presentation.AssemblyReference.Assembly);
 
