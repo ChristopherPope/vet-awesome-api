@@ -19,4 +19,11 @@ internal sealed class UserRepository : Repository<User>, IUserRepository
                       select u)
                 .ToListAsync(cancellationToken);
     }
+
+    public async Task<User?> ReadUserAsync(int userId, CancellationToken cancellationToken)
+    {
+        return await (from u in Entities
+                      where u.Id == userId
+                      select u).FirstOrDefaultAsync(cancellationToken);
+    }
 }
