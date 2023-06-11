@@ -70,6 +70,9 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
                 return;
             }
         }
+
+        vets.AddRange(vetsBusyUntil.Values.SelectMany(l => l));
+        vetsBusyUntil.Clear();
     }
 
     private void PullFreeVets(DateTime startTime)
