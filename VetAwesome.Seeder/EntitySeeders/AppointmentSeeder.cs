@@ -12,6 +12,9 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
     private readonly ILogger<AppointmentSeeder> logger;
     private readonly IUserSeeder userSeeder;
     private readonly IPetSeeder petSeeder;
+    private CancellationToken cancellationToken = default(CancellationToken);
+    private List<User> vets = new();
+    private readonly Dictionary<DateTime, List<User>> vetsBusyUntil = new();
 
     public IReadOnlyCollection<Appointment> Appointments => EntityList;
 
@@ -28,22 +31,22 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
 
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
+        this.cancellationToken = cancellationToken;
         await petSeeder.LoadAllPetsAsync(cancellationToken);
         await userSeeder.LoadAllUsersAsync(cancellationToken);
+
+        vets = userSeeder.Users
+            .Where(u => u.UserRoleId == (int)RoleTypes.Veterinarian)
+            .ToList();
 
         Guard.IsNull(entityList);
         entityList = new();
 
-        var startTime = new TimeOnly(8, 0, 0);
-        for (var i = 0; i < 32; i++)
+        DateTime forDay = DateTime.Now.AddDays(-5);
+        for (int i = 0; i <= 10; i++)
         {
-            startTime = startTime.AddMinutes(i * 15);
-            CreateAppointments(startTime);
-
-            if (cancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
+            CreateAppointmentsForDay(forDay);
+            forDay = forDay.AddDays(1);
         }
 
         await CreateAllEntitiesAsync(cancellationToken);
@@ -54,27 +57,67 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
         await DeleteAllEntitiesAsync(cancellationToken);
     }
 
-    private void CreateAppointments(TimeOnly startTime)
+    private void CreateAppointmentsForDay(DateTime forDay)
     {
-        var vets = userSeeder.Users.Where(u => u.UserRoleId == (int)RoleTypes.Veterinarian);
-        var numAppointments = rand.Next(0, vets.Count());
+        var startTime = new DateTime(forDay.Year, forDay.Month, forDay.Day, 8, 0, 0);
+        for (var i = 0; i < 36; i++)
+        {
+            CreateAppointmentsForStartTime(startTime);
+            startTime = startTime.AddMinutes(15);
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+        }
+    }
+
+    private void PullFreeVets(DateTime startTime)
+    {
+        if (!vetsBusyUntil.ContainsKey(startTime))
+        {
+            return;
+        }
+
+        vets.AddRange(vetsBusyUntil[startTime]);
+        vetsBusyUntil.Remove(startTime);
+    }
+
+    private void RecordVetInUse(User vet, DateTime busyUntil)
+    {
+        if (!vetsBusyUntil.ContainsKey(busyUntil))
+        {
+            vetsBusyUntil.Add(busyUntil, new List<User>());
+        }
+
+        vetsBusyUntil[busyUntil].Add(vet);
+        vets.RemoveAt(vets.FindIndex(v => v.Id == vet.Id));
+    }
+
+    private void CreateAppointmentsForStartTime(DateTime startTime)
+    {
+        PullFreeVets(startTime);
+        var numAppointments = rand.Next(0, vets.Count() + 1);
         for (var i = 0; i < numAppointments; i++)
         {
+            if (!vets.Any())
+            {
+                return;
+            }
+
             var vet = GetRandomElement(vets);
             var pet = GetRandomElement(petSeeder.Pets);
             var endTime = startTime
                 .AddMinutes(rand.Next(1, 5) * 15);
 
-            var appointment = pet.AddAppointment(SetTimeToToday(startTime), SetTimeToToday(endTime), vet);
+            var appointment = pet.AddAppointment(startTime, endTime, vet);
             entityList!.Add(appointment);
+            RecordVetInUse(vet, endTime);
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
         }
-    }
-
-    private DateTime SetTimeToToday(TimeOnly time)
-    {
-        var today = DateTime.Now.Date;
-        today += time.ToTimeSpan();
-
-        return today;
     }
 }

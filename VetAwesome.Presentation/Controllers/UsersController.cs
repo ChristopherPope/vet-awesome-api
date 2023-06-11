@@ -19,8 +19,8 @@ public sealed class UsersController : ApiController
     }
 
     [HttpPost]
-    [Route("{userId}")]
-    public async Task<ActionResult> Authenticate(int userId, CancellationToken cancellationToken)
+    [Route("authenticate")]
+    public async Task<ActionResult> Authenticate([FromBody] int userId, CancellationToken cancellationToken)
     {
         await currentUser.SetUserAsync(userId, cancellationToken);
 

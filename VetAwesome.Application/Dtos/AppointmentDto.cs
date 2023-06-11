@@ -3,18 +3,13 @@
 public sealed class AppointmentDto
 {
     public int Id { get; set; }
-    public int PetId { get; set; }
-    public int PetBreedId { get; set; }
-    public int PetTypeId { get; set; }
-    public int VeterinarianId { get; private set; }
-
-    public string? PetBreed { get; set; }
-    public string? VetName { get; set; }
-    public string? OwnerName { get; set; }
+    public string Subject { get; set; } = string.Empty;
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public int DurationMins { get; set; }
-
-    public CustomerDto? Owner { get; set; }
+    public bool IsAllDay { get; set; }
+    public bool IsBlock { get; set; }
+    public bool IsReadonly { get; set; }
+    public int ResourceId { get; set; } = 1;
+    public int RoomId { get; set; } = 1;
+    public int CalendarId { get; set; } = 1;
 }
-

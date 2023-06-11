@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using VetAwesome.Application.Dtos;
+using VetAwesome.Application.EntityDtoMapping.Resolvers;
 using VetAwesome.Domain.Entities;
 
 namespace VetAwesome.Application.EntityDtoMapping;
@@ -8,7 +9,7 @@ internal sealed class AppointmentMapping : Profile
 {
     public AppointmentMapping()
     {
-        CreateMap<Appointment, AppointmentDto>()
+        CreateMap<Appointment, FullAppointmentDto>()
             .ForMember(dto => dto.PetBreed, opt => opt.MapFrom(entity => $"{entity.Pet.PetBreed.PetType.Name} - {entity.Pet.PetBreed.Name}"))
             .ForMember(dto => dto.Owner, opt => opt.MapFrom(entity => entity.Pet.Customer))
             .ForMember(dto => dto.OwnerName, opt => opt.MapFrom(entity => entity.Pet.Customer.Name))
@@ -17,6 +18,8 @@ internal sealed class AppointmentMapping : Profile
             .ForMember(dto => dto.PetTypeId, opt => opt.MapFrom(entity => entity.Pet.PetBreed.PetTypeId))
             .ForMember(dto => dto.DurationMins, opt => opt.MapFrom(entity => (entity.EndTime - entity.StartTime).Minutes));
 
+        CreateMap<Appointment, AppointmentDto>()
+            .ForMember(dto => dto.Subject, opt => opt.MapFrom<AppointmentSubjectResolver>());
 
         CreateMap<Customer, CustomerDto>();
         CreateMap<Pet, PetDto>();

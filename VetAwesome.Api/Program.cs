@@ -8,8 +8,10 @@ builder.Services
     {
         options.AddDefaultPolicy(policy =>
         {
-            policy.WithMethods("GET", "POST", "PATCH", "PUT");
-            policy.WithOrigins("http://localhost:4200", "http://[::1]:4200/");
+            policy
+                .AllowAnyMethod()   //.WithMethods("GET", "POST", "PATCH", "PUT");
+                .WithOrigins("http://localhost:4200", "http://[::1]:4200/")
+                .AllowAnyHeader();
         });
     })
     .AddInfrastructure(builder.Configuration)

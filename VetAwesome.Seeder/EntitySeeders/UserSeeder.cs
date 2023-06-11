@@ -35,7 +35,7 @@ internal sealed class UserSeeder : EntitySeeder<User>, IUserSeeder
         Guard.IsNull(entityList);
         entityList = new();
 
-        var numVets = rand.Next(2, 6);
+        var numVets = 2; // rand.Next(1, 3);
         var vetRole = roleSeeder.Roles.First(r => r.Id == (int)RoleTypes.Veterinarian);
         while (entityList.Count < numVets)
         {

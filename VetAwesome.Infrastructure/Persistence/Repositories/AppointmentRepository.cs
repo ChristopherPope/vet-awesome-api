@@ -12,16 +12,13 @@ internal sealed class AppointmentRepository : Repository<Appointment>, IAppointm
     {
     }
 
-    public async Task<IEnumerable<Appointment>> ReadAllAppointmentsForDayAsync(DateOnly forDay, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Appointment>> ReadAppointments(DateTime startTimeInclusive, DateTime endTimeInclusive, CancellationToken cancellationToken)
     {
-        var begin = forDay.ToDateTime(new TimeOnly(0, 0, 0, 0));
-        var end = forDay.ToDateTime(new TimeOnly(23, 59, 59, 999));
-
         return await (from a in Entities
-                .Include(a => a.Pet).ThenInclude(p => p.Customer)
+                .Include(a => a.Pet).ThenInclude(p => p.Customer).ThenInclude(c => c.State)
                 .Include(a => a.Pet).ThenInclude(p => p.PetBreed).ThenInclude(b => b.PetType)
                 .Include(a => a.Veterinarian).ThenInclude(v => v.UserRole)
-                      where a.StartTime >= begin && a.StartTime <= end
+                      where a.StartTime >= startTimeInclusive && a.StartTime <= endTimeInclusive
                       orderby a.StartTime
                       select a)
                 .ToListAsync(cancellationToken);

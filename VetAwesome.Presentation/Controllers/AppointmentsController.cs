@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using VetAwesome.Application.CommandsAndQueries.Appointments.Queries.GetAppointmentsForDay;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
+using VetAwesome.Application.CommandsAndQueries.Appointments.Queries.GetAppointments;
 using VetAwesome.Application.Dtos;
 
 namespace VetAwesome.Presentation.Controllers;
@@ -15,12 +17,14 @@ public class AppointmentsController : ApiController
 
     [HttpGet]
     [Route("")]
-    public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentsForToday(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointments([Required] DateTime startDate, [Required] DateTime endDate, CancellationToken cancellationToken)
     {
-        var request = new GetAppointmentsForDayQuery(DateOnly.FromDateTime(DateTime.Now));
+        var request = new GetAppointmentsQuery(startDate, endDate);
         var appointments = await mediator.Send(request, cancellationToken);
 
-        return Ok(appointments);
+        return new JsonResult(appointments, new JsonSerializerOptions());
+
+        //return Ok(appointments);
     }
 
 }
