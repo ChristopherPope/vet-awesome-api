@@ -20,6 +20,22 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
         entities = new Lazy<DbSet<T>>(() => this.dbContext.Set<T>());
     }
 
+    public async ValueTask<T?> ReadByIdAsync(int id)
+    {
+        return await Entities.FindAsync(id);
+    }
+
+    public async ValueTask DeleteByIdAsync(int id)
+    {
+        var entity = await ReadByIdAsync(id);
+        if (entity == null)
+        {
+            return;
+        }
+
+        Entities.Remove(entity);
+    }
+
     public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
         await dbContext.Database.ExecuteSqlRawAsync($"delete from {TableName}", cancellationToken);

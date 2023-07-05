@@ -3,7 +3,7 @@ using MediatR;
 using VetAwesome.Application.Dtos;
 using VetAwesome.Application.Interfaces.Persistence;
 
-namespace VetAwesome.Application.CommandsAndQueries.Appointments.Queries.GetAppointments;
+namespace VetAwesome.Application.CommandsAndQueries.Appointments.GetAppointments;
 
 internal sealed class GetAppointmentsQueryHandler : IRequestHandler<GetAppointmentsQuery, IEnumerable<AppointmentDto>>
 {

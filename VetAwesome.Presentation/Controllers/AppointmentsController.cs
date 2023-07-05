@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using VetAwesome.Application.CommandsAndQueries.Appointments.Queries.GetAppointments;
+using VetAwesome.Application.CommandsAndQueries.Appointments.DeleteAppointment;
+using VetAwesome.Application.CommandsAndQueries.Appointments.GetAppointments;
 using VetAwesome.Application.Dtos;
+using VetAwesome.Application.Exceptions;
 
 namespace VetAwesome.Presentation.Controllers;
 
@@ -13,6 +15,22 @@ public class AppointmentsController : ApiController
 {
     public AppointmentsController(ISender mediator) : base(mediator)
     {
+    }
+
+    [HttpDelete]
+    [Route("{appointmentId}")]
+    public async Task<IActionResult> DeleteAppointment([Required] int appointmentId)
+    {
+        try
+        {
+            var command = new DeleteAppointmentCommand(appointmentId);
+            await mediator.Send(command);
+            return NoContent();
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpGet]
