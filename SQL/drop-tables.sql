@@ -1,0 +1,9 @@
+drop table if exists Appointments
+drop table if exists Pets
+drop table if exists PetBreeds
+drop table if exists PetTypes
+drop table if exists Customers
+drop table if exists Addresses
+drop table if exists States
+drop table if exists Users
+drop table if exists UserRoles

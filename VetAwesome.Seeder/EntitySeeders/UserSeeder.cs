@@ -1,10 +1,8 @@
-﻿using Bogus;
-using CommunityToolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VetAwesome.Domain.Entities;
-using VetAwesome.Domain.Enums;
-using VetAwesome.Infrastructure.Persistence;
+using VetAwesome.Seeder.Database;
+using VetAwesome.Seeder.Database.Enums;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
@@ -13,12 +11,12 @@ internal sealed class UserSeeder : EntitySeeder<User>, IUserSeeder
 {
     public IReadOnlyCollection<User> Users => EntityList;
 
-    private readonly IRoleSeeder roleSeeder;
+    private readonly IUserRoleSeeder roleSeeder;
     private readonly ILogger<UserSeeder> logger;
 
     public UserSeeder(ILogger<UserSeeder> logger
         , VetAwesomeDb vetDb
-        , IRoleSeeder roleSeeder)
+        , IUserRoleSeeder roleSeeder)
         : base(logger, vetDb)
     {
         this.roleSeeder = roleSeeder;
@@ -33,19 +31,19 @@ internal sealed class UserSeeder : EntitySeeder<User>, IUserSeeder
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
         Guard.IsNull(entityList);
-        entityList = new();
+        entityList = [];
 
-        var numVets = 2; // rand.Next(1, 3);
-        var vetRole = roleSeeder.Roles.First(r => r.Id == (int)RoleTypes.Veterinarian);
+        var numVets = 2;
+        var vetRole = roleSeeder.Roles.First(r => r.Id == (int)UserRoleType.Veterinarian);
         while (entityList.Count < numVets)
         {
             CreateUser(vetRole);
         }
 
-        var adminRole = roleSeeder.Roles.First(r => r.Id == (int)RoleTypes.Secretary);
+        var adminRole = roleSeeder.Roles.First(r => r.Id == (int)UserRoleType.Secretary);
         CreateUser(adminRole);
 
-        var ownerRole = roleSeeder.Roles.First(r => r.Id == (int)RoleTypes.Owner);
+        var ownerRole = roleSeeder.Roles.First(r => r.Id == (int)UserRoleType.Owner);
         CreateUser(ownerRole);
 
         await CreateAllEntitiesAsync(cancellationToken);
@@ -56,10 +54,10 @@ internal sealed class UserSeeder : EntitySeeder<User>, IUserSeeder
         await DeleteAllEntitiesAsync(cancellationToken);
     }
 
-    private void CreateUser(Role role)
+    private void CreateUser(UserRole role)
     {
-        var faker = new Faker();
-        var user = User.Create(faker.Name.FullName(), role);
+        var name = faker.Name;
+        var user = new User { FirstName = name.FirstName(), LastName = name.LastName(), UserRole = role };
         entityList!.Add(user);
     }
 }

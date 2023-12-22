@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
-using VetAwesome.Domain.Entities;
-using VetAwesome.Domain.Enums;
-using VetAwesome.Infrastructure.Persistence;
+using VetAwesome.Seeder.Database;
+using VetAwesome.Seeder.Database.Enums;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
@@ -12,9 +11,9 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
     private readonly ILogger<AppointmentSeeder> logger;
     private readonly IUserSeeder userSeeder;
     private readonly IPetSeeder petSeeder;
-    private CancellationToken cancellationToken = default(CancellationToken);
-    private List<User> vets = new();
-    private readonly Dictionary<DateTime, List<User>> vetsBusyUntil = new();
+    private CancellationToken cancellationToken = default;
+    private List<User> vets = [];
+    private readonly Dictionary<DateTime, List<User>> vetsBusyUntil = [];
 
     public IReadOnlyCollection<Appointment> Appointments => EntityList;
 
@@ -36,11 +35,11 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
         await userSeeder.LoadAllUsersAsync(cancellationToken);
 
         vets = userSeeder.Users
-            .Where(u => u.UserRoleId == (int)RoleTypes.Veterinarian)
+            .Where(u => u.UserRoleId == (int)UserRoleType.Veterinarian)
             .ToList();
 
         Guard.IsNull(entityList);
-        entityList = new();
+        entityList = [];
 
         DateTime forDay = DateTime.Now.AddDays(-5);
         for (int i = 0; i <= 10; i++)
@@ -77,33 +76,34 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
 
     private void PullFreeVets(DateTime startTime)
     {
-        if (!vetsBusyUntil.ContainsKey(startTime))
+        if (!vetsBusyUntil.TryGetValue(startTime, out List<User>? value))
         {
             return;
         }
 
-        vets.AddRange(vetsBusyUntil[startTime]);
+        vets.AddRange(value);
         vetsBusyUntil.Remove(startTime);
     }
 
     private void RecordVetInUse(User vet, DateTime busyUntil)
     {
-        if (!vetsBusyUntil.ContainsKey(busyUntil))
+        if (!vetsBusyUntil.TryGetValue(busyUntil, out List<User>? value))
         {
-            vetsBusyUntil.Add(busyUntil, new List<User>());
+            value = [];
+            vetsBusyUntil.Add(busyUntil, value);
         }
 
-        vetsBusyUntil[busyUntil].Add(vet);
+        value.Add(vet);
         vets.RemoveAt(vets.FindIndex(v => v.Id == vet.Id));
     }
 
     private void CreateAppointmentsForStartTime(DateTime startTime)
     {
         PullFreeVets(startTime);
-        var numAppointments = rand.Next(0, vets.Count() + 1);
+        var numAppointments = rand.Next(0, vets.Count + 1);
         for (var i = 0; i < numAppointments; i++)
         {
-            if (!vets.Any())
+            if (vets.Count == 0)
             {
                 return;
             }
@@ -113,7 +113,13 @@ internal sealed class AppointmentSeeder : EntitySeeder<Appointment>, IAppointmen
             var endTime = startTime
                 .AddMinutes(rand.Next(1, 5) * 15);
 
-            var appointment = pet.AddAppointment(startTime, endTime, vet);
+            var appointment = new Appointment
+            {
+                Veterinarian = vet,
+                Pet = pet,
+                EndTime = endTime,
+                StartTime = startTime,
+            };
             entityList!.Add(appointment);
             RecordVetInUse(vet, endTime);
 

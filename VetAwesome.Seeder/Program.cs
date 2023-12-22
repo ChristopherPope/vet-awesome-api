@@ -5,8 +5,9 @@ using Microsoft.Extensions.Hosting;
 using Scrutor;
 using Serilog;
 using Serilog.Events;
-using VetAwesome.Infrastructure.Persistence;
+using System.Reflection;
 using VetAwesome.Seeder;
+using VetAwesome.Seeder.Database;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -39,9 +40,7 @@ try
 
             _ = services.Scan(
                     selector => selector
-                        .FromAssemblies(
-                            VetAwesome.Infrastructure.AssemblyReference.Assembly,
-                            VetAwesome.Seeder.AssemblyReference.Assembly)
+                        .FromAssemblies(Assembly.GetExecutingAssembly())
                         .AddClasses(false)
                         .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                         .AsMatchingInterface()
@@ -49,8 +48,7 @@ try
 
             _ = services
                 .AddDbContext<VetAwesomeDb>(options => options.UseSqlServer(config.GetConnectionString("VetAwesome")))
-                .AddHostedService<Seeder>()
-                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(VetAwesome.Application.AssemblyReference.Assembly));
+                .AddHostedService<Seeder>();
 
         })
         .Build()

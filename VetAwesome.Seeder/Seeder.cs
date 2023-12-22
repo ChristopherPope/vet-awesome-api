@@ -6,38 +6,53 @@ namespace VetAwesome.Seeder;
 
 internal class Seeder : IHostedService, IAsyncDisposable
 {
-    private readonly IStateSeeder stateSeeder;
-    private readonly IPetTypeSeeder petTypeSeeder;
-    private readonly IPetBreedSeeder breedSeeder;
-    private readonly IPetSeeder petSeeder;
-    private readonly ICustomerSeeder customerSeeder;
-    private readonly IRoleSeeder roleSeeder;
-    private readonly IUserSeeder userSeeder;
-    private readonly IAppointmentSeeder appointmentSeeder;
     private readonly ILogger<Seeder> logger;
     private readonly Task completedTask = Task.CompletedTask;
+    private readonly IAppointmentSeeder appointmentSeeder;
+    private readonly IReadOnlyList<IEntitySeeder> entityDeletionHierarchy;
+    private readonly IReadOnlyList<IEntitySeeder> entityCreationHierarchy;
     private Task? task;
 
     public Seeder(ILogger<Seeder> logger
         , IStateSeeder stateSeeder
         , IPetTypeSeeder petTypeSeeder
         , IPetSeeder petSeeder
-        , IPetBreedSeeder breedSeeder
+        , IPetBreedSeeder petBreedSeeder
         , ICustomerSeeder customerSeeder
-        , IRoleSeeder roleSeeder
+        , IUserRoleSeeder roleSeeder
         , IUserSeeder userSeeder
         , IAppointmentSeeder appointmentSeeder
+        , IAddressSeeder addressSeeder
         )
     {
         this.logger = logger;
-        this.stateSeeder = stateSeeder;
-        this.petTypeSeeder = petTypeSeeder;
-        this.breedSeeder = breedSeeder;
-        this.petSeeder = petSeeder;
-        this.customerSeeder = customerSeeder;
-        this.roleSeeder = roleSeeder;
-        this.userSeeder = userSeeder;
         this.appointmentSeeder = appointmentSeeder;
+
+        entityDeletionHierarchy =
+            [
+                appointmentSeeder,
+                petSeeder,
+                petBreedSeeder,
+                petTypeSeeder,
+                customerSeeder,
+                addressSeeder,
+                stateSeeder,
+                userSeeder,
+                roleSeeder,
+            ];
+
+        entityCreationHierarchy =
+            [
+                roleSeeder,
+                userSeeder,
+                stateSeeder,
+                addressSeeder,
+                customerSeeder,
+                petTypeSeeder,
+                petBreedSeeder,
+                petSeeder,
+                appointmentSeeder,
+            ];
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -108,19 +123,7 @@ internal class Seeder : IHostedService, IAsyncDisposable
 
     private async Task DeleteEntitiesAsync(CancellationToken cancellationToken)
     {
-        var deletionSeeders = new List<IEntitySeeder>()
-        {
-            appointmentSeeder,
-            petSeeder,
-            customerSeeder,
-            userSeeder,
-            roleSeeder,
-            breedSeeder,
-            petTypeSeeder,
-            stateSeeder,
-        };
-
-        foreach (var seeder in deletionSeeders)
+        foreach (var seeder in entityDeletionHierarchy)
         {
             if (cancellationToken.IsCancellationRequested)
             {
@@ -133,19 +136,7 @@ internal class Seeder : IHostedService, IAsyncDisposable
 
     private async Task CreateEntitiesAsync(CancellationToken cancellationToken)
     {
-        var creationSeeders = new List<IEntitySeeder>()
-        {
-            roleSeeder,
-            userSeeder,
-            petTypeSeeder,
-            breedSeeder,
-            stateSeeder,
-            customerSeeder,
-            petSeeder,
-            appointmentSeeder,
-        };
-
-        foreach (var seeder in creationSeeders)
+        foreach (var seeder in entityCreationHierarchy)
         {
             if (cancellationToken.IsCancellationRequested)
             {

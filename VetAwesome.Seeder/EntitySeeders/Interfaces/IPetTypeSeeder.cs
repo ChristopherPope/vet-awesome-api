@@ -1,4 +1,4 @@
-﻿using VetAwesome.Domain.Entities;
+﻿using VetAwesome.Seeder.Database;
 
 namespace VetAwesome.Seeder.EntitySeeders.Interfaces;
 

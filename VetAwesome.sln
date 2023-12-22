@@ -13,9 +13,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Presentation", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Api", "VetAwesome.Api\VetAwesome.Api.csproj", "{1B03C29B-4B27-49F2-B3D6-4203B1A3CAF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zPowerTools", "zPowerTools\zPowerTools.csproj", "{CB471722-FA3C-45B0-B89D-5C056F767197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "zPowerTools", "zPowerTools\zPowerTools.csproj", "{CB471722-FA3C-45B0-B89D-5C056F767197}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetAwesome.Seeder", "VetAwesome.Seeder\VetAwesome.Seeder.csproj", "{B872A8FA-8231-4483-81DB-12B526AF74AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VetAwesome.Seeder", "VetAwesome.Seeder\VetAwesome.Seeder.csproj", "{B872A8FA-8231-4483-81DB-12B526AF74AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1893893F-156D-4584-830B-9C385BDE77ED}"
+	ProjectSection(SolutionItems) = preProject
+		SQL\drop-tables.sql = SQL\drop-tables.sql
+		SQL\QueryAppointments.sql = SQL\QueryAppointments.sql
+		SQL\create-tables.sql = SQL\create-tables.sql
+		SQL\Users.sql = SQL\Users.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

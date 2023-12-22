@@ -1,18 +1,19 @@
-﻿using CommunityToolkit.Diagnostics;
+﻿using Bogus;
+using CommunityToolkit.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VetAwesome.Domain.Entities;
-using VetAwesome.Infrastructure.Persistence;
+using VetAwesome.Seeder.Database;
 
 namespace VetAwesome.Seeder.EntitySeeders;
 
-internal abstract class EntitySeeder<T> where T : Entity
+internal abstract class EntitySeeder<T> where T : class
 {
     protected List<T>? entityList = null;
     protected readonly Random rand = new();
     private readonly ILogger logger;
     protected readonly VetAwesomeDb vetDb;
-    protected readonly string tableName;
+    protected readonly string entityName;
+    protected readonly Faker faker = new Faker();
 
     protected EntitySeeder(ILogger logger
         , VetAwesomeDb vetDb)
@@ -20,7 +21,7 @@ internal abstract class EntitySeeder<T> where T : Entity
         this.logger = logger;
         this.vetDb = vetDb;
 
-        tableName = vetDb.Model.FindEntityType(typeof(T))?.GetSchemaQualifiedTableName() ?? string.Empty;
+        entityName = typeof(T).Name;
     }
 
     protected IReadOnlyCollection<T> EntityList
@@ -45,9 +46,10 @@ internal abstract class EntitySeeder<T> where T : Entity
             return;
         }
 
+        var tableName = vetDb.Model.FindEntityType(typeof(T))?.GetSchemaQualifiedTableName() ?? string.Empty;
         await vetDb.Database.ExecuteSqlRawAsync($"delete from {tableName}", cancellationToken);
         await vetDb.SaveChangesAsync(cancellationToken);
-        logger.LogInformation($"Deleted all in {tableName}.");
+        logger.LogInformation($"Deleted all in {entityName} entities.");
         entityList = null;
     }
 
@@ -62,6 +64,6 @@ internal abstract class EntitySeeder<T> where T : Entity
         var set = vetDb.Set<T>();
         await set.AddRangeAsync(EntityList, cancellationToken);
         await vetDb.SaveChangesAsync(cancellationToken);
-        logger.LogInformation($"Created {entityList.Count:N0} entities in {tableName}.");
+        logger.LogInformation($"Created {entityList.Count:N0} {entityName} entities.");
     }
 }

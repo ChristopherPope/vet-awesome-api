@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VetAwesome.Domain.Entities;
-using VetAwesome.Infrastructure.Persistence;
+using VetAwesome.Seeder.Database;
 using VetAwesome.Seeder.EntitySeeders.Interfaces;
 
 namespace VetAwesome.Seeder.EntitySeeders;
@@ -10,8 +9,8 @@ namespace VetAwesome.Seeder.EntitySeeders;
 internal sealed class PetSeeder : EntitySeeder<Pet>, IPetSeeder
 {
     #region Names
-    private readonly List<string> petNames = new()
-        {
+    private readonly List<string> petNames =
+        [
             "Millie",
             "Maggie",
             "Winston",
@@ -62,7 +61,7 @@ internal sealed class PetSeeder : EntitySeeder<Pet>, IPetSeeder
             "Sebastian",
             "Houdini",
             "Sox"
-        };
+        ];
     #endregion
 
     private readonly ILogger<PetSeeder> logger;
@@ -93,17 +92,20 @@ internal sealed class PetSeeder : EntitySeeder<Pet>, IPetSeeder
     public async Task CreateAsync(CancellationToken cancellationToken)
     {
         Guard.IsNull(entityList);
-        entityList = new List<Pet>();
+        entityList = [];
 
         foreach (var customer in customerSeeder.Customers)
         {
             var petCount = rand.Next(1, 5);
-            while (customer.Pets.Count < petCount)
+            for (var i = 0; i < petCount; i++)
             {
-                var petName = GetRandomElement(petNames);
-                var breed = GetRandomElement(breedSeeder.Breeds);
+                var pet = new Pet
+                {
+                    Name = GetRandomElement(petNames),
+                    PetBreed = GetRandomElement(breedSeeder.Breeds),
+                    Customer = customer,
+                };
 
-                var pet = customer.AddPet(petName, breed);
                 entityList.Add(pet);
             }
         }
