@@ -41,4 +41,16 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Addresses\" />
+    <Folder Include="Entities\Appointments\" />
+    <Folder Include="Entities\Customers\" />
+    <Folder Include="Entities\PetBreeds\" />
+    <Folder Include="Entities\Pets\" />
+    <Folder Include="Entities\PetTypes\" />
+    <Folder Include="Entities\States\" />
+    <Folder Include="Entities\UserRoles\" />
+    <Folder Include="Entities\Users\" />
+  </ItemGroup>
+
 </Project>
