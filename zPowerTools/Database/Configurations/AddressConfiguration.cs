@@ -11,6 +11,8 @@ namespace VetAwesome.Seeder.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<Address> entity)
         {
+            entity.ToTable("Address");
+
             entity.Property(e => e.City)
             .IsRequired()
             .HasMaxLength(20)
@@ -27,7 +29,7 @@ namespace VetAwesome.Seeder.Database.Configurations
             entity.HasOne(d => d.State).WithMany(p => p.Addresses)
             .HasForeignKey(d => d.StateId)
             .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("FK_Addresses_States");
+            .HasConstraintName("FK_Address_State");
 
             OnConfigurePartial(entity);
         }

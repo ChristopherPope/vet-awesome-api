@@ -11,6 +11,8 @@ namespace VetAwesome.Seeder.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<Pet> entity)
         {
+            entity.ToTable("Pet");
+
             entity.Property(e => e.Name)
             .IsRequired()
             .HasMaxLength(50)
@@ -19,12 +21,12 @@ namespace VetAwesome.Seeder.Database.Configurations
             entity.HasOne(d => d.Customer).WithMany(p => p.Pets)
             .HasForeignKey(d => d.CustomerId)
             .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("FK_Pets_Customers");
+            .HasConstraintName("FK_Pet_Customer");
 
             entity.HasOne(d => d.PetBreed).WithMany(p => p.Pets)
             .HasForeignKey(d => d.PetBreedId)
             .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("FK_Pets_PetBreeds");
+            .HasConstraintName("FK_Pet_PetBreed");
 
             OnConfigurePartial(entity);
         }

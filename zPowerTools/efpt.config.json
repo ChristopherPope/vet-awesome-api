@@ -16,39 +16,39 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[Addresses]",
+         "Name": "[dbo].[Address]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Appointments]",
+         "Name": "[dbo].[Appointment]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Customers]",
+         "Name": "[dbo].[Customer]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[PetBreeds]",
+         "Name": "[dbo].[Pet]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Pets]",
+         "Name": "[dbo].[PetBreed]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[PetTypes]",
+         "Name": "[dbo].[PetType]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[States]",
+         "Name": "[dbo].[State]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserRoles]",
+         "Name": "[dbo].[User]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Users]",
+         "Name": "[dbo].[UserRole]",
          "ObjectType": 0
       }
    ],

@@ -11,6 +11,8 @@ namespace VetAwesome.Seeder.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<PetType> entity)
         {
+            entity.ToTable("PetType");
+
             entity.Property(e => e.Name)
             .IsRequired()
             .HasMaxLength(50)

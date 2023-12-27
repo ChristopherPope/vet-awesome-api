@@ -11,6 +11,8 @@ namespace VetAwesome.Seeder.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<State> entity)
         {
+            entity.ToTable("State");
+
             entity.Property(e => e.Abbreviation)
             .IsRequired()
             .HasMaxLength(2)

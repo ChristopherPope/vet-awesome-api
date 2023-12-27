@@ -11,6 +11,8 @@ namespace VetAwesome.Seeder.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<User> entity)
         {
+            entity.ToTable("User");
+
             entity.Property(e => e.FirstName)
             .IsRequired()
             .HasMaxLength(50)
@@ -23,7 +25,7 @@ namespace VetAwesome.Seeder.Database.Configurations
             entity.HasOne(d => d.UserRole).WithMany(p => p.Users)
             .HasForeignKey(d => d.UserRoleId)
             .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("FK_Users_UserRoles");
+            .HasConstraintName("FK_User_UserRole");
 
             OnConfigurePartial(entity);
         }

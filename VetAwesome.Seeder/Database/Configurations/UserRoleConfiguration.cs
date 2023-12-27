@@ -11,6 +11,8 @@ namespace VetAwesome.Seeder.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<UserRole> entity)
         {
+            entity.ToTable("UserRole");
+
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Name)
             .IsRequired()

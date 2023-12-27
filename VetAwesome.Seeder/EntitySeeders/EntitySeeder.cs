@@ -47,7 +47,7 @@ internal abstract class EntitySeeder<T> where T : class
         }
 
         var tableName = vetDb.Model.FindEntityType(typeof(T))?.GetSchemaQualifiedTableName() ?? string.Empty;
-        await vetDb.Database.ExecuteSqlRawAsync($"delete from {tableName}", cancellationToken);
+        await vetDb.Database.ExecuteSqlRawAsync($"delete from [{tableName}]", cancellationToken);
         await vetDb.SaveChangesAsync(cancellationToken);
         logger.LogInformation($"Deleted all in {entityName} entities.");
         entityList = null;
