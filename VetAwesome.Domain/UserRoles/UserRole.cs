@@ -1,9 +1,10 @@
 ﻿#nullable disable
+using VetAwesome.Domain.Interfaces;
 using VetAwesome.Domain.Users;
 
 namespace VetAwesome.Domain.UserRoles;
 
-public partial class UserRole
+public partial class UserRole : IEntity
 {
     public int Id { get; set; }
 

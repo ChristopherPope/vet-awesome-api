@@ -1,9 +1,10 @@
 ﻿#nullable disable
+using VetAwesome.Domain.Interfaces;
 using VetAwesome.Domain.PetBreeds;
 
 namespace VetAwesome.Domain.PetTypes;
 
-public partial class PetType
+public partial class PetType : IEntity
 {
     public int Id { get; set; }
 

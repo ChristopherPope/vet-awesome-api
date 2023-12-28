@@ -1,10 +1,11 @@
 ﻿#nullable disable
+using VetAwesome.Domain.Interfaces;
 using VetAwesome.Domain.Pets;
 using VetAwesome.Domain.Users;
 
 namespace VetAwesome.Domain.Appointments;
 
-public partial class Appointment
+public partial class Appointment : IEntity
 {
     public int Id { get; set; }
 

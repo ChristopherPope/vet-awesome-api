@@ -1,10 +1,11 @@
 ﻿#nullable disable
 using VetAwesome.Domain.Customers;
+using VetAwesome.Domain.Interfaces;
 using VetAwesome.Domain.States;
 
 namespace VetAwesome.Domain.Addresses;
 
-public partial class Address
+public partial class Address : IEntity
 {
     public int Id { get; set; }
 
