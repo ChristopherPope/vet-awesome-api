@@ -1,23 +1,42 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Diagnostics;
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+
+    VetAwesome.Application.Extensions.ServicesExtensions.AddVetAwesomeApplication(builder.Services);
+    VetAwesome.Persistence.Extensions.ServicesExtensions.AddVetAwesomePersistences(builder.Services, builder.Configuration.GetConnectionString("VetAwesomeDb") ?? string.Empty);
+
+    var app = builder.Build();
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseAuthorization();
+    app.MapControllers();
+    app.Run();
+}
+catch (Exception ex)
+{
+    //Log.Fatal(ex, "Exemplar API terminated unexpectedly");
+    if (OperatingSystem.IsWindows())
+    {
+        var eventLog = new EventLog("Application")
+        {
+            Source = "Application"
+        };
+        eventLog.WriteEntry($"VetAwesome API terminated unexpectedly {Environment.NewLine}{ex}");
+    }
+}
+finally
+{
+    //Log.CloseAndFlush();
 }
 
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

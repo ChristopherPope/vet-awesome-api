@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VetAwesome.Application\VetAwesome.Application.csproj" />
+    <ProjectReference Include="..\VetAwesome.Persistence\VetAwesome.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
