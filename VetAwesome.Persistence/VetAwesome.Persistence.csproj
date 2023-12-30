@@ -20,4 +20,8 @@
     <ProjectReference Include="..\VetAwesome.Domain\VetAwesome.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>
