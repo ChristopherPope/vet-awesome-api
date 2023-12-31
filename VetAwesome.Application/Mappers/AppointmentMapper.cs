@@ -13,14 +13,15 @@ internal partial class AppointmentMapper : IAppointmentMapper
     public AppointmentDto FromEntity(Appointment entity)
     {
         var dto = InternalFromEntity(entity);
-        if (entity.Veterinarian != null)
-        {
-            var firstInitial = entity.Veterinarian.FirstName[0].ToString().ToUpper();
-            dto.VeterinarianName = $"Dr. {firstInitial}. {entity.Veterinarian.LastName}";
-        }
+        var firstInitial = entity.Veterinarian.FirstName[0].ToString().ToUpper();
+        dto.VeterinarianName = $"Dr. {firstInitial}. {entity.Veterinarian.LastName}";
+
+        dto.CustomerName = $"{entity.Pet.Customer.FirstName} {entity.Pet.Customer.LastName}";
 
         return dto;
     }
 
+    [MapProperty(nameof(@Appointment.Pet.PetBreed.Name), nameof(AppointmentDto.Breed))]
+    [MapProperty(nameof(@Appointment.Pet.PetBreed.PetType.Name), nameof(AppointmentDto.PetType))]
     private partial AppointmentDto InternalFromEntity(Appointment entity);
 }
