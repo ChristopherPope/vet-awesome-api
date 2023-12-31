@@ -19,6 +19,11 @@ internal class GetApointmentsListQueryHandler : VetAwesomeQueryHandler, IRequest
         var appointmentEntities = await uow.Appointments.ReadForDayAsync(request.ForDay);
 
         var response = AppointmentsResponse.Success(appointmentMapper.FromEntities(appointmentEntities));
+        var a2 = response.Appointments?.ToList()[0];
+
+        var a = appointmentEntities.ToList()[0];
+        a.Veterinarian.FirstName = "bobo";
+
         return response;
     }
 }

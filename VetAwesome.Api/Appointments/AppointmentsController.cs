@@ -6,8 +6,8 @@ using VetAwesome.Application.Appointments.Queries;
 namespace VetAwesome.API.Appointments;
 
 [ApiController]
-[Route("[controller]")]
-internal class AppointmentsController : VetAwesomeController
+[Route("api/[controller]")]
+public class AppointmentsController : VetAwesomeController
 {
     public AppointmentsController(IMediator mediator)
         : base(mediator)

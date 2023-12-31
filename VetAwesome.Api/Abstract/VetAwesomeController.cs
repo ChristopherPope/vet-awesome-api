@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace VetAwesome.API.Abstract;
 
-internal abstract class VetAwesomeController : ControllerBase
+public abstract class VetAwesomeController : ControllerBase
 {
     protected readonly IMediator mediator;
 

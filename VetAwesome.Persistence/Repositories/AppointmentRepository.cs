@@ -13,7 +13,7 @@ internal sealed class AppointmentRepository : BaseRepository<Appointment>, IAppo
     public async Task<IEnumerable<Appointment>> ReadForDayAsync(DateOnly day)
     {
         return await (from a in Entities.Include(a => a.Veterinarian)
-                      where a.StartTime <= day.ToDateTime(TimeOnly.MinValue) && a.EndTime <= day.ToDateTime(TimeOnly.MaxValue)
+                          // where a.StartTime <= day.ToDateTime(TimeOnly.MinValue) && a.EndTime <= day.ToDateTime(TimeOnly.MaxValue)
                       select a)
                       .ToListAsync();
     }
