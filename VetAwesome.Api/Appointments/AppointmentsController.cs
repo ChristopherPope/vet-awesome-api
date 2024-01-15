@@ -15,6 +15,7 @@ public class AppointmentsController : VetAwesomeController
     }
 
     [HttpGet]
+    [Route("Today")]
     public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetApoinmentsForToday()
     {
         var query = new GetAppointmentsListQuery(DateOnly.FromDateTime(DateTime.Now));
